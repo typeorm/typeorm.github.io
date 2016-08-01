@@ -166,6 +166,14 @@ header h1 {
   color: #294E80;
 }
 
+header h1 a {
+  color: #294E80;
+}
+
+header h1 a:hover {
+  color: #294E80;
+}
+
 header strong {
   color: #E0004F;
   font-weight: bold;
