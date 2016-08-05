@@ -1,0 +1,396 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>TypeORM - DataMapper ORM for TypeScript and Node.JS</title>
+
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <link rel="stylesheet" href="vendors/prism/prism.css">
+    <link rel="stylesheet" href="vendors/prism/prism-coy.css">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <h1><a href="index.html"><strong>Type</strong>ORM</a></h1>
+        <p>Data-mapper ORM for Typescript and MySQL.</p>
+
+        <ul class="menu">
+            <li><a href="index.html#what-is-typeorm">What is TypeORM?</a><br/></li>
+            <li class="no-bullet">
+                <ul>
+                    <li><a href="index.html#installation">Installation</a><br/></li>
+                    <li><a href="index.html#example">Example</a><br/></li>
+                </ul>
+            </li>
+            <li><a href="connection.html">Connection and connection manager</a><br/></li>
+            <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
+            <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
+            <li><a href="tables-and-table-inheritance.html">Tables and table inheritance</a><br/></li>
+            <li><a href="table-columns.html">Table Columns</a><br/></li>
+            <li><a href="relations.html">Relations</a><br/></li>
+            <li><a href="indices.html">Indices</a><br/></li>
+            <li><a href="repository.html">Repository</a><br/></li>
+            <li><a href="query-builder.html">Query Builder</a><br/></li>
+            <li><a href="entity-manager.html">Entity Manager</a><br/></li>
+            <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>
+            <li><a href="naming-strategies.html">Naming Strategies</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+        </ul>
+
+    </header>
+    <section>
+
+        <h2>Connection and Connection Manager</h2>
+
+        <p><b>Connection</b> is a single database connection to specific database of the specific database management system.
+        You can have multiple connections to multiple databases in your application.</p>
+
+        <p><b>ConnectionManager</b> is used to manage all these different connections.
+        Also it provides useful factory methods to simplify connection creation.</p>
+
+        <ul>
+            <li><a href="#creating-connection">Creating a new connection</a></li>
+            <li><a href="#connection-options">Connection options</a></li>
+            <li><a href="#working-with-connection">Working with connection</a></li>
+            <li><a href="#api.connection">Connection API</a></li>
+        </ul>
+
+        <h3 id="creating-connection">
+            <a class="anchor" href="#creating-connection"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Creating a new connection
+        </h3>
+
+        <p>Creating a new connection is easy as:</p>
+        <p><code class="language-typescript">let connection = new Connection(name: string, driver: Driver);</code></p>
+        <p>
+            But in most of cases you may want to use <code class="language-typescript">ConnectionManager</code> instead.
+            There are several methods in the ConnectionManager you can use:
+
+            <ul>
+                <li>
+                    <code class="language-typescript">createAndConnect(options: ConnectionOptions): Promise&lt;Connection&gt;</code> -
+                    Creates a new connection based on the given connection options and establishes a connection.
+                </li>
+                <li>
+                    <code class="language-typescript">create(options: ConnectionOptions): Connection</code> -
+                    Creates a new connection based on the given connection options.
+                    At this time connection is not established yet, so you can configure your connection
+                    the way you need before you establish a connection.
+                </li>
+            </ul>
+        </p>
+
+        <p>
+            But the simplest way to create a connection is to use function from a <code>typeorm</code> module:
+            <code class="language-typescript">createConnection(options: CreateConnectionOptions)</code>
+
+        </p>
+
+        <h3 id="connection-options">
+            <a class="anchor" href="#connection-options"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Connection options
+        </h3>
+
+        TBD
+
+        <h3 id="working-with-connection">
+            <a class="anchor" href="#working-with-connection"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Working with connection
+        </h3>
+
+        <p>There are several useful methods in the Connection object:</p>
+
+        <ul>
+            <li>
+                <code class="language-typescript">connect()</code> - Opens a new connection with the database.
+            </li>
+            <li>
+                <code class="language-typescript">close()</code> - Closes connection with the database.
+            </li>
+            <li>
+                <code class="language-typescript">getRepository(SomeModel)</code> - Gets repository of the SomeModel entity.
+                Repository provides all functionality to work with this model, e.g. you can perform selects, inserts, updated
+                and deletes in the database throw the repository.
+            </li>
+            <li>
+                <code class="language-typescript">entityManager</code> - Gets EntityManager of your repository.
+                Entity Manager used to manage all your entities and their repositories.
+                You can select/insert/update/delete any entity throw the entity manager.
+            </li>
+        </ul>
+
+        <p>
+            Here is example how you can use these methods:
+        </p>
+
+        <pre><code class="language-typescript">
+import {ConnectionManager, ConnectionOptions} from "typeorm";
+import {User} from "./User"; // lets say we have this entity
+import {Photo} from "./Photo"; // lets say we have this entity
+import {Post} from "./Post"; // lets say we have this entity
+
+const connectionOptions: ConnectionOptions = {
+    driver: "mysql",
+    driverOptions: {
+        host: "localhost",
+        username: "root",
+        password: "admin",
+        database: "test",
+        entities: [User, Photo, Post]
+    }
+};
+
+const connectionManager = new ConnectionManager();
+connectionManager.createAndConnect(connectionOptions).then(connection => {
+
+    // using these repositories you can create, insert, update and delete entities:
+    const userRepository  = connection.getRepository(User);
+    const photoRepository = connection.getRepository(Photo);
+    const postRepository  = connection.getRepository(Post);
+
+    // using this entity manager you can do any operation your repositories can with any entity:
+    const entityManager = connection.entityManager;
+
+});
+        </code></pre>
+
+        <p>Learn more about repositories here and about entity manager here.</p>
+
+        <h3 id="api.connection">
+            <a class="anchor" href="#api.connection"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Connection API:
+        </h3>
+        <p>Here is a public API of <code>Connection</code> that you can use:</p>
+
+        <ul class="api-doc">
+            <li id="api.connection.name">
+                <a class="anchor" href="#api.connection.name"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">name: string</code>
+                <p>
+                    Connection name.
+                </p>
+            </li>
+            <li id="api.connection.driver">
+                <a class="anchor" href="#api.connection.driver"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">driver: Driver</code>
+                <p>
+                    Database driver used by connection.
+                </p>
+            </li>
+            <li id="api.connection.entityMetadatas">
+                <a class="anchor" href="#api.connection.entityMetadatas"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">entityMetadatas: EntityMetadataCollection</code>
+                <p>
+                    All entity metadatas that are registered for this connection.
+                </p>
+            </li>
+            <li id="api.connection.broadcaster">
+                <a class="anchor" href="#api.connection.broadcaster"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">broadcaster: Broadcaster</code>
+                <p>
+                    Event broadcaster used to broadcast entity events.
+                </p>
+            </li>
+            <li id="api.connection.isConnected">
+                <a class="anchor" href="#api.connection.isConnected"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">isConnected: boolean</code>
+                <p>
+                    Indicates if connection to the database already established for this connection.
+                </p>
+            </li>
+            <li id="api.connection.entityManager">
+                <a class="anchor" href="#api.connection.entityManager"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">entityManager: EntityManager</code>
+                <p>
+                    Gets entity manager that allows to perform repository operations with any entity of this connection.
+                </p>
+            </li>
+            <li id="api.connection.reactiveEntityManager">
+                <a class="anchor" href="#api.connection.reactiveEntityManager"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">reactiveEntityManager: ReactiveEntityManager</code>
+                <p>
+                    Gets entity manager that allows to perform repository operations with any entity of this connection.
+                    This version of entity manager is reactive - works with Observables instead of Promises.
+                </p>
+            </li>
+            <li id="api.connection.connect">
+                <a class="anchor" href="#api.connection.connect"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">connect(): Promise&lt;Connection&gt;</code>
+                <p>
+                    Performs connection to the database.
+                    Can perform schema synchronization if it was set in connection options.
+                </p>
+            </li>
+            <li id="api.connection.close">
+                <a class="anchor" href="#api.connection.close"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">close(): Promise&lt;void&gt;</code>
+                <p>
+                    Closes connection with the database.
+                    Once connection is closed, you cannot use repositories and perform any operations except
+                    opening connection again.
+                </p>
+            </li>
+            <li id="api.connection.dropDatabase">
+               <a class="anchor" href="#api.connection.dropDatabase"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                 <code class="language-typescript">dropDatabase(): Promise&lt;void&gt;</code>
+                <p>
+                    Drops the database and all its data.
+                </p>
+            </li>
+            <li id="api.connection.syncSchema">
+                <a class="anchor" href="#api.connection.syncSchema"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">syncSchema(dropBeforeSync: boolean = false): Promise&lt;void&gt;</code>
+                <p>
+                    Creates database schema for all entities registered in this connection.
+                    If dropBeforeSync options is set to true, then it drops the database before schema creation.
+                </p>
+            </li>
+            <li id="api.connection.importEntitiesFromDirectories">
+                <a class="anchor" href="#api.connection.importEntitiesFromDirectories"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importEntitiesFromDirectories(paths: string[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports entities from the given paths (directories) and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importEntitySchemaFromDirectories">
+                <a class="anchor" href="#api.connection.importEntitySchemaFromDirectories"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importEntitySchemaFromDirectories(paths: string[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports entity schemas from the given paths (directories) and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importSubscribersFromDirectories">
+                <a class="anchor" href="#api.connection.importSubscribersFromDirectories"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importSubscribersFromDirectories(paths: string[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports subscribers from the given paths (directories) and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importNamingStrategiesFromDirectories">
+               <a class="anchor" href="#api.connection.importNamingStrategiesFromDirectories"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                 <code class="language-typescript">importNamingStrategiesFromDirectories(paths: string[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports naming strategies from the given paths (directories) and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importEntities">
+                <a class="anchor" href="#api.connection.importEntities"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importEntities(entities: Function[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports entities and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importEntitySchemas">
+                <a class="anchor" href="#api.connection.importEntitySchemas"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importEntitySchemas(schemas: EntitySchema[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports schemas and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importSubscribers">
+                <a class="anchor" href="#api.connection.importSubscribers"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importSubscribers(subscriberClasses: Function[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports subscribers and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.importNamingStrategies">
+                <a class="anchor" href="#api.connection.importNamingStrategies"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">importNamingStrategies(strategies: Function[]): Promise&lt;Connection&gt;</code>
+                <p>
+                    Imports naming strategies and registers them in the current connection.
+                </p>
+            </li>
+            <li id="api.connection.useNamingStrategy">
+                <a class="anchor" href="#api.connection.useNamingStrategy"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">useNamingStrategy(name: Function|string): Promise&lt;Connection&gt;</code>
+                <p>
+                    Sets given naming strategy to be used.
+                    Naming strategy must be set to be used before connection is established.
+                </p>
+            </li>
+            <li id="api.connection.getMetadata">
+                <a class="anchor" href="#api.connection.getMetadata"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getMetadata(entity: Function|string): Promise&lt;Connection&gt;</code>
+                <p>
+                    Gets entity metadata for the given entity class or schema name.
+                </p>
+            </li>
+            <li id="api.connection.getRepository">
+                <a class="anchor" href="#api.connection.getRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): Repository&lt;Entity&gt;</code>
+                <p>
+                    Gets repository for the given entity class or name.
+                </p>
+            </li>
+            <li id="api.connection.getTreeRepository">
+                <a class="anchor" href="#api.connection.getTreeRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getTreeRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): TreeRepository&lt;Entity&gt;</code>
+                <p>
+                    Gets tree repository for the given entity class.
+                    Only tree-type entities can have a TreeRepository,
+                    like ones decorated with @ClosureTable decorator.
+                </p>
+            </li>
+            <li id="api.connection.getSpecificRepository">
+                <a class="anchor" href="#api.connection.getSpecificRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getSpecificRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): SpecificRepository&lt;Entity&gt;</code>
+                <p>
+                    Gets specific repository for the given entity class or name.
+                    SpecificRepository is a special repository that contains specific and non standard repository methods.
+                </p>
+            </li>
+            <li id="api.connection.getReactiveRepository">
+                <a class="anchor" href="#api.connection.getReactiveRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getReactiveRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): ReactiveRepository&lt;Entity&gt;</code>
+                <p>
+                    Gets reactive repository for the given entity class or name.
+                    Reactive repositories has same functionality as regular repositories,
+                    the only difference is that reactive repository methods return Observable instead of Promise.
+                </p>
+            </li>
+            <li id="api.connection.getReactiveTreeRepository">
+                <a class="anchor" href="#api.connection.getReactiveTreeRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getReactiveTreeRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): ReactiveTreeRepository&lt;Entity&gt;</code>
+                <p>
+                    Gets reactive repository for the given entity class or name.
+                    Reactive repositories has same functionality as regular repositories,
+                    the only difference is that reactive repository methods return Observable instead of Promise.
+                </p>
+            </li>
+            <li id="api.connection.getSpecificReactiveRepository">
+                <a class="anchor" href="#api.connection.getSpecificReactiveRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getSpecificReactiveRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): SpecificReactiveRepository&lt;Entity&gt;</code>
+                <p>
+                    Gets specific repository for the given entity class or name.
+                    SpecificReactiveRepository is a special repository that contains specific and non standard repository methods.
+                    Reactive repositories has same functionality as regular repositories,
+                    the only difference is that reactive repository methods return Observable instead of Promise.
+                </p>
+            </li>
+        </ul>
+
+    </section>
+    <footer>
+        <p>
+            <small>
+                © 2015-2016 <a href="https://github.com/typeorm/typeorm"><span class="secondary">Type</span>ORM</a>.<br/>
+                Created and maintained by <a href="https://github.com/pleerock">Umed Khudoiberdiev</a>.
+            </small>
+        </p>
+    </footer>
+</div>
+
+<script src="javascripts/scale.fix.js"></script>
+<script src="vendors/prism/prism.js"></script>
+<script src="vendors/prism/prism-typescript.min.js"></script>
+
+</body>
+</html>

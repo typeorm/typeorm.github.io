@@ -76,12 +76,13 @@ h1 {
 }
 
 h2 {
-  color:#393939;
+  color:#294E80;
+  font-size: 24px;
 }
 
 h3 {
    font-size: 20px;
-   color: #294E80;
+   /*color: #294E80;*/
 }
 
 a {
@@ -104,8 +105,12 @@ a:hover small {
   color:#777;
 }
 
+b {
+  color: #333;
+}
+
 .wrapper {
-  width:860px;
+  width: 1000px;
   margin:0 auto;
 }
 
@@ -124,7 +129,7 @@ code {
 }
 
 code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
+  font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
   color:#333;
   font-size:12px;
 }
@@ -209,7 +214,7 @@ header ul a strong {
 }
 
 section {
-  width:500px;
+  width:650px;
   float:right;
   padding-bottom:50px;
 }
@@ -310,6 +315,17 @@ footer p {
 /* CUSTOM */
 .anchor {
   float: left;
+  margin-left: -25px;
+}
+
+ul.api-doc li{
+  list-style: none;
+}
+li .anchor {
+  margin-left: -45px;
+  margin-top: 3px;
+}
+ul.api-doc li .anchor {
   margin-left: -25px;
 }
 
