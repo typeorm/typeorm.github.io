@@ -81,8 +81,8 @@ Lets create a sample application - a photo album.
 First we create a new file `Photo.ts` and put a class there:
 
 ```typescript
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
 
 @Table("photo")
 export class Photo {
@@ -242,9 +242,9 @@ class called `PhotoMetadata.ts` which will contain a `PhotoMetadata` class
 which supposed to be contain our Photo's additional meta-information:
 
 ```typescript
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {OneToOne, JoinColumn} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {OneToOne, JoinColumn} from "typeorm";
 
 @Table("photo_metadata")
 export class PhotoMetadata {
@@ -445,9 +445,9 @@ one author, and each author can have many photos. First, lets create a
 `Author` class:
 
 ```typescript
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {OneToMany} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {OneToMany} from "typeorm";
 
 @Table("author")
 export class Author {
@@ -554,9 +554,9 @@ be in many albums, and multiple can have many photos. Lets create an
 `Album` class:
 
 ```typescript
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {ManyToMany, JoinTable} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {ManyToMany, JoinTable} from "typeorm";
 
 @Table("album")
 export class Album {
@@ -773,9 +773,9 @@ Learn more about EntityManager [here](docs/entity-manager.md).
 * [connection and connection options](docs/connection-and-connection-options.md)
 * [databases and drivers](docs/databases-and-drivers.md)
 * [updating database schema](docs/updating-database-schema.md)
-* [tables and table inheritance](docs/tables-and-table-inheritance.md)
+* [tables and table inheritance](docs-and-table-inheritance.md)
 * [table columns](docs/table-columns.md)
-* [relations](docs/relations.md)
+* [relations](docs.md)
 * [indices and keys](docs/indices-and-keys.md)
 * [repository](docs/repository.md)
 * [query builder](docs/query-builder.md)

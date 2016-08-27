@@ -312,9 +312,9 @@ repository.remove(photo).then(() => {
 
 
         <pre><code class="language-typescript">
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {OneToOne, JoinColumn} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {OneToOne, JoinColumn} from "typeorm";
 
 @Table("photo_metadata")
 export class PhotoMetadata {
@@ -527,9 +527,9 @@ createConnection(options).then(connection => {
         `Author` class:</p>
 
         <pre><code class="language-typescript">
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {OneToMany} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {OneToMany} from "typeorm";
 
 @Table("author")
 export class Author {
@@ -634,9 +634,9 @@ createConnection(options).then(connection => {
         `Album` class:</p>
 
         <pre><code class="language-typescript">
-import {Table} from "typeorm/tables";
-import {PrimaryColumn, Column} from "typeorm/columns";
-import {ManyToMany, JoinTable} from "typeorm/relations";
+import {Table} from "typeorm";
+import {PrimaryColumn, Column} from "typeorm";
+import {ManyToMany, JoinTable} from "typeorm";
 
 @Table()
 export class Album {
