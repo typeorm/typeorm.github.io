@@ -19,7 +19,7 @@
 <div class="wrapper">
     <header>
         <h1><a href="index.html"><strong>Type</strong>ORM</a></h1>
-        <p>Data-mapper ORM for Typescript and MySQL.</p>
+        <p>Data-Mapper ORM for TypeScript, ES Next, ES7, ES6, ES5. Supports MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, Oracle databases.</p>
 
         <ul class="menu">
             <li><a href="index.html#what-is-typeorm">What is TypeORM?</a><br/></li>
@@ -29,11 +29,12 @@
                     <li><a href="index.html#example">Example</a><br/></li>
                 </ul>
             </li>
-            <li><a href="connection.html">Connection and connection options</a><br/></li>             <li><a href="connection-manager.html">Connection Manager</a><br/></li>
+            <li><a href="connection.html">Connection and connection options</a><br/></li>
+            <li><a href="connection-manager.html">Connection Manager</a><br/></li>
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
-            <li><a href="tables-and-table-inheritance.html">Tables and table inheritance</a><br/></li>
-            <li><a href="table-columns.html">Table Columns</a><br/></li>
+            <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
+            <li><a href="table-inheritance.html">Table Inheritance</a><br/></li>
             <li><a href="relations.html">Relations</a><br/></li>
             <li><a href="indices.html">Indices</a><br/></li>
             <li><a href="repository.html">Repository</a><br/></li>
@@ -47,7 +48,42 @@
     </header>
     <section>
 
-        <h2>TBD</h2>
+        <h2>
+            Updating database schema
+        </h2>
+
+        <p>
+            One of the main responsibility of TypeORM is to make your database tables in sync with your entities
+            There are two ways that help you to achieve this:
+        </p>
+
+        <ul>
+            <li>
+                <p>Use <code>autoSchemaSync: true</code> in your connection options:</p>
+                <pre><code class="language-typescript">
+import {createConnection} from "typeorm";
+
+createConnection({
+    /* ... other options */
+    autoSchemaSync: true
+});
+        </code></pre>
+                This option makes your database to be in sync with entities each time you run this code.
+                This option is perfect during development, but in production you may not want this option to be enabled.
+            </li>
+            <li>
+                <p>Use [command line tools] and run schema sync manually in the command line:</p>
+                <code>typeorm schema:sync</code>
+                <p>This command will execute schema synchronization. Note, that to make command line tools to work,
+                you must create a [ormconfig.json] file.</p>
+            </li>
+        </ul>
+
+        <p>
+            Schema sync is extremely fast. We have checked it with > 300 tables,
+            in take only few seconds to sync a schema. So, if you are considering to disable <code>autoSchemaSync</code>
+            option during development because of performance issues, first check how fast or slow is it.
+        </p>
 
     </section>
     <footer>
