@@ -29,7 +29,7 @@
                     <li><a href="index.html#example">Example</a><br/></li>
                 </ul>
             </li>
-            <li><a href="connection.html">Connection and connection manager</a><br/></li>
+            <li><a href="connection.html">Connection and connection options</a><br/></li>
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-table-inheritance.html">Tables and table inheritance</a><br/></li>
@@ -47,18 +47,25 @@
     </header>
     <section>
 
-        <h2>Connection and Connection Manager</h2>
+        <h2>Connection and Connection Options</h2>
 
-        <p><b>Connection</b> is a single database connection to a specific database of a database management system.
-        You can have multiple connections to multiple databases in your application.</p>
-
-        <p><b>ConnectionManager</b> is used to store and manage all these different connections.
-        It also provides useful factory methods to simplify connection creation.</p>
+        <p>
+            <b>Connection</b> is a single database connection to a specific database of a database management system.
+            You can have multiple connections to multiple databases in your application.
+        </p>
+        <p>
+            <b>ConnectionOptions</b> is an interface with settings and options for specific connection.
+            Options contain database and other connection-related settings.
+            You <i>must</i> provide connection options for each of your connections.
+        </p>
 
         <ul>
             <li><a href="#creating-connection">Creating a new connection</a></li>
             <li><a href="#connection-options">Connection options</a></li>
             <li><a href="#working-with-connection">Working with connection</a></li>
+            <li><a href="#connection-ormconfig-json">Creating connection from ormconfig.json</a></li>
+            <li><a href="#connection-environment-variables">Creating connection from environment variables</a></li>
+            <li><a href="#creating-connection-manually">Creating connection manually</a></li>
             <li><a href="#api.connection">Connection API</a></li>
         </ul>
 
@@ -67,30 +74,82 @@
             Creating a new connection
         </h3>
 
-        <p>Creating a new connection is easy as:</p>
-        <p><code class="language-typescript">let connection = new Connection(name: string, driver: Driver);</code></p>
         <p>
-            But in most of cases you may want to use <code class="language-typescript">ConnectionManager</code> instead.
-            There are several methods in the ConnectionManager you can use:
+            To create a new connection you should use facade methods from "typeorm" namespace:
+        </p>
+        <ul class="simple-links">
+            <li>
+                <code class="language-typescript">createConnection(options?: ConnectionOptions): Promise&lt;Connection&gt;</code><br/>
+                Creates a new connection based on the given <a href="#connection-options">connection options</a>
+                and establishes a connection.
+                <ul>
+                    <li>
+                        If options argument is not given, then connection will be established from the configuration
+                        in the <a href="#connection-ormconfig-json">ormconfig.json</a> file.
+                        Since this method only initializes a single connection, only connection with "default" name
+                        will be initialized from ormconfig.json file.
+                    </li>
+                    <li>
+                        If ormconfig.json file is missing, then connection will be established from
+                        <a href="#connection-environment-variables">environment variables</a>.
+                    </li>
+                    <li>
+                        If environment variables are missing too, then it will throw an error.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <code class="language-typescript">createConnections(arrayOfOptions?: ConnectionOptions[]): Promise&lt;Connection[]&gt;</code>
+                Creates a new connections based on the given array of <a href="#connection-options">connection options</a>
+                and establishes a connections for each connection options object.
+                <ul>
+                    <li>
+                        If options argument is not given, then connections will be established from the configuration
+                        in the <a href="#connection-ormconfig-json">ormconfig.json</a> file.
+                        All environment-specific connections will be initialized then.
+                    </li>
+                    <li>
+                        If ormconfig.json file is missing, then connection will be established from
+                        <a href="#connection-environment-variables">environment variables</a>.
+                        Only one connection can be initailzed from environment variables, and that connection
+                        will be returned in array.
+                    </li>
+                    <li>
+                        If environment variables are missing too, then it will throw an error.
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
-            <ul>
-                <li>
-                    <code class="language-typescript">createAndConnect(options: ConnectionOptions): Promise&lt;Connection&gt;</code> -
-                    Creates a new connection based on the given connection options and establishes a connection.
-                </li>
-                <li>
-                    <code class="language-typescript">create(options: ConnectionOptions): Connection</code> -
-                    Creates a new connection based on the given connection options.
-                    At this time connection is not established yet, so you can configure your connection
-                    the way you need before you establish a connection.
-                </li>
-            </ul>
+        <p>
+            Example how you can create a single connection:
         </p>
 
-        <p>
-            But the simplest way to create a connection is to use function from a <code>typeorm</code> module:
-            <code class="language-typescript">createConnection(options: ConnectionOptions)</code>
+        <pre><code class="language-typescript">
+import {createConnection} from "typeorm";
 
+createConnection({
+    driver: {
+        type: "mysql",
+        host: "localhost",
+        port: 3306,
+        username: "root",
+        password: "admin",
+        database: "test"
+    },
+    entities: [
+        __dirname + "/entity/*.js" // here we load all entities from entity directory
+    ],
+    autoSchemaSync: true
+}).then(connection => {
+
+    // connected. Now you can manipulate your entities!
+
+});
+        </code></pre>
+
+        <p class="simple-links">
+            Learn more about options we are passing to <i>createConnection</i> method in the next section.
         </p>
 
         <h3 id="connection-options">
@@ -108,143 +167,170 @@ export interface ConnectionOptions {
     /**
      * Database connection options.
      */
-    driver: {
+    readonly driver: {
 
         /**
-         * Database type. Mysql and postgres are the only drivers supported at this moment.
+         * Database type. This value is required.
          */
-        type: "mysql"|"postgres";
+        readonly type: "mysql"|"mysql2"|"postgres"|"mariadb"|"sqlite"|"oracle"|"mssql";
 
         /**
-         * Url to where perform connection.
+         * Connection url to where perform connection to.
          */
-        url?: string;
+        readonly url?: string;
 
         /**
          * Database host.
          */
-        host?: string;
+        readonly host?: string;
 
         /**
          * Database host port.
          */
-        port?: number;
+        readonly port?: number;
 
         /**
          * Database username.
          */
-        username?: string;
+        readonly username?: string;
 
         /**
          * Database password.
          */
-        password?: string;
+        readonly password?: string;
 
         /**
          * Database name to connect to.
          */
-        database?: string;
+        readonly database?: string;
 
         /**
-         * Driver logging options.
+         * Connection SID (used for Oracle databases).
          */
-        logging?: {
+        readonly sid?: string;
 
-            /**
-             * Some specific logger to be used. By default it is a console.
-             */
-            logger?: (message: any, level: string) => void;
+        /**
+         * Storage type or path to the storage (used for SQLite databases).
+         */
+        readonly storage?: string;
 
-            /**
-             * Set to true if you want to log every executed query.
-             */
-            logQueries?: boolean;
+        /**
+         * Indicates if connection pooling should be used or not.
+         * Be default it is enabled if its supported by a platform. Set to false to disable it.
+         */
+        readonly usePool?: boolean;
 
-            /**
-             * Set to true if you want to log only failed query.
-             */
-            logOnlyFailedQueries?: boolean;
+        /**
+         * Extra connection options to be passed to the driver.
+         */
+        readonly extra?: any;
 
-            /**
-             * Set to true if you want to log error of the failed query.
-             */
-            logFailedQueryError?: boolean;
+        /**
+         * Prefix to use on all tables of this connection in the database.
+         */
+        readonly tablesPrefix?: string;
 
-        };
     };
 
     /**
      * Connection name. If connection name is not given then it will be called "default".
      * Different connections must have different names.
      */
-    connectionName?: string;
+    readonly name?: string;
 
     /**
      * Name of the naming strategy or target class of the naming strategy to be used for this connection.
      */
-    usedNamingStrategy?: string|Function;
+    readonly usedNamingStrategy?: string|Function;
+
+    /**
+     * Entities to be loaded for this connection.
+     * Accepts both entity classes and directories where from entities need to be loaded.
+     * Directories support glob patterns.
+     */
+    readonly entities?: Function[]|string[];
+
+    /**
+     * Subscribers to be loaded for this connection.
+     * Accepts both subscriber classes and directories where from subscribers need to be loaded.
+     * Directories support glob patterns.
+     */
+    readonly subscribers?: Function[]|string[];
+
+    /**
+     * Naming strategies to be loaded for this connection.
+     * Accepts both naming strategy classes and directories where from naming strategies need to be loaded.
+     * Directories support glob patterns.
+     */
+    readonly namingStrategies?: Function[]|string[];
+
+    /**
+     * Entity schemas to be loaded for this connection.
+     * Accepts both entity schema classes and directories where from entity schemas need to be loaded.
+     * Directories support glob patterns.
+     */
+    readonly entitySchemas?: EntitySchema[]|string[];
+
+    /**
+     * Logging options.
+     */
+    readonly logging?: {
+
+        /**
+         * Some specific logger to be used. By default it is a console.
+         */
+        readonly logger?: (level: string, message: any) => void;
+
+        /**
+         * Set to true if you want to log every executed query.
+         */
+        readonly logQueries?: boolean;
+
+        /**
+         * Set to true if you want to log only failed query.
+         */
+        readonly logOnlyFailedQueries?: boolean;
+
+        /**
+         * Set to true if you want to log error of the failed query.
+         */
+        readonly logFailedQueryError?: boolean;
+
+        /**
+         * If set to true then schema creation logs will be logged.
+         */
+        readonly logSchemaCreation?: boolean;
+
+    };
 
     /**
      * Drops the schema each time connection is being established.
-     * Be careful with this option and don't use this in production - otherwise you'll loose all your production data.
+     * Be careful with this option and don't use this in production - otherwise you'll loose all production data.
      * This option is useful during debug and development.
      */
-    dropSchemaOnConnection?: boolean;
+    readonly dropSchemaOnConnection?: boolean;
 
     /**
      * Indicates if database schema should be auto created on every application launch.
+     * Be careful with this option and don't use this in production - otherwise you can loose production data.
+     * This option is useful during debug and development.
+     * Alternative to it, you can use CLI and run schema:sync command.
      */
-    autoSchemaCreate?: boolean;
+    readonly autoSchemaSync?: boolean;
 
     /**
-     * Entities to be loaded for the this connection.
+     * Environment in which connection will run.
+     * Current environment is determined from the environment NODE_ENV variable's value.
+     * For example, if NODE_ENV is "test" and this property is set to "test",
+     * then this connection will be created. On any other NODE_ENV value it will be skipped.
+     * This option is specific to the configuration in the ormconfig.json file.
      */
-    entities?: Function[];
-
-    /**
-     * Subscribers to be loaded for the this connection.
-     */
-    subscribers?: Function[];
-
-    /**
-     * Naming strategies to be loaded for the this connection.
-     */
-    namingStrategies?: Function[];
-
-    /**
-     * Entity schemas to be loaded for the this connection.
-     */
-    entitySchemas?: EntitySchema[];
-
-    /**
-     * List of files with entities from where they will be loaded.
-     * Glob patterns are supported.
-     */
-    entityDirectories?: string[];
-
-    /**
-     * List of files with subscribers from where they will be loaded.
-     * Glob patterns are supported.
-     */
-    subscriberDirectories?: string[];
-
-    /**
-     * List of files with naming strategies from where they will be loaded.
-     * Glob patterns are supported.
-     */
-    namingStrategyDirectories?: string[];
-
-    /**
-     * List of files with entity schemas from where they will be loaded.
-     * Glob patterns are supported.
-     */
-    entitySchemaDirectories?: string[];
+    readonly environment?: string;
 
 }
         </code></pre>
 
         Example of connection options:
-
 
         <pre><code class="language-typescript">
 const connectionOptions: ConnectionOptions = {
@@ -254,14 +340,15 @@ const connectionOptions: ConnectionOptions = {
         port: 3306,
         username: "root",
         password: "admin",
-        database: "test",
-        logging: {
-            logQueries: true
-        }
-    };
-    autoSchemaCreate: true,
-    entityDirectories: ["src/modules/**/entity/{*.ts,*.js}"],
-    subscriberDirectories: ["src/modules/**/subscriber/{*.ts,*.js}"]
+        database: "test"
+    },
+    logging: {
+        logQueries: true,
+        logFailedQueryError: true,
+    }
+    autoSchemaSync: true,
+    entities: [__dirname + "/modules/**/entity/{*.ts,*.js}"],
+    subscribers: [__dirname + "/modules/**/subscriber/{*.ts,*.js}"]
 }
         </code></pre>
 
@@ -276,19 +363,21 @@ const connectionOptions: ConnectionOptions = {
         <ul>
             <li>
                 <code class="language-typescript">connect()</code> - Opens a new connection with the database.
+                If you created connection with <i>createConnection</i> method, then your connection is already
+                established, and you should not call this method.
             </li>
             <li>
                 <code class="language-typescript">close()</code> - Closes connection with the database.
             </li>
             <li>
                 <code class="language-typescript">getRepository(SomeModel)</code> - Gets repository of the SomeModel entity.
-                Repository provides all functionality to work with this model, e.g. you can perform selects, inserts, updated
-                and deletes in the database throw the repository.
+                Repository provides all functionality to work with this model, e.g. you can perform selects, inserts, updates
+                and deletes in the database with the repository.
             </li>
             <li>
                 <code class="language-typescript">entityManager</code> - Gets EntityManager of your repository.
                 Entity Manager used to manage all your entities and their repositories.
-                You can select/insert/update/delete any entity throw the entity manager.
+                You can select/insert/update/delete any entity with the entity manager.
             </li>
         </ul>
 
@@ -297,7 +386,7 @@ const connectionOptions: ConnectionOptions = {
         </p>
 
         <pre><code class="language-typescript">
-import {ConnectionManager, ConnectionOptions} from "typeorm";
+import {createConnection, ConnectionOptions} from "typeorm";
 import {User} from "./User"; // lets say we have this entity
 import {Photo} from "./Photo"; // lets say we have this entity
 import {Post} from "./Post"; // lets say we have this entity
@@ -306,16 +395,16 @@ const connectionOptions: ConnectionOptions = {
     driver: {
         type: "mysql",
         host: "localhost",
+        port: 3306,
         username: "root",
         password: "admin",
         database: "test"
     },
     entities: [User, Photo, Post],
-    autoSchemaCreate: true
+    autoSchemaSync: true
 };
 
-const connectionManager = new ConnectionManager();
-connectionManager.createAndConnect(connectionOptions).then(connection => {
+createConnection(connectionOptions).then(connection => {
 
     // using these repositories you can create, insert, update and delete entities:
     const userRepository  = connection.getRepository(User);
@@ -328,7 +417,140 @@ connectionManager.createAndConnect(connectionOptions).then(connection => {
 });
         </code></pre>
 
-        <p>Learn more about repositories here and about entity manager here.</p>
+        <p class="simple-links">
+            Learn more connection methods in <a href="#api.connection">Connection API</a> section.
+        </p>
+
+        <h3 id="connection-ormconfig-json">
+            <a class="anchor" href="#connection-ormconfig-json"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Creating connection from ormconfig.json
+        </h3>
+
+        <p>
+            You can create a file named <b>ormconfig.json</b> in the root of your application (near package.json)
+            and TypeORM will initialize you connections from that file. Here is how your configuration should look like:
+        </p>
+
+        <pre><code class="language-javascript">
+  {
+    "name": "default",
+    "driver": {
+      "type": "mysql",
+      "host": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "admin",
+      "database": "test"
+    },
+    "autoSchemaSync": true
+  },
+  {
+    "name": "seconary-connection",
+    "driver": {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "root",
+      "password": "admin",
+      "database": "test"
+    },
+    "autoSchemaSync": true
+  }
+]
+        </code></pre>
+
+        <p class="simple-links">
+            You can have multiple configurations in your ormconfig.json file.
+            Each configuration should have unique name, until they are in the same environment.
+            Each configuration is a <i><a href="#connection-options">ConnectionOptions</a></i> object.
+        </p>
+
+        <p>
+            Configurations can be environment-specific, for example:
+        </p>
+
+        <pre><code class="language-javascript">
+  {
+    "environment": "prod",
+    "name": "default",
+    "driver": {
+      "type": "mysql",
+      "host": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "admin",
+      "database": "test"
+    },
+    "autoSchemaSync": true
+  },
+  {
+    "environment": "dev",
+    "name": "default",
+    "driver": {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "root",
+      "password": "admin",
+      "database": "test"
+    },
+    "autoSchemaSync": true
+  }
+]
+        </code></pre>
+
+        <p>
+            Now, if you set NODE_ENV to "prod", then mysql connection will be established.
+            If you set NODE_ENV to "dev" then postgres connection will be established.
+        </p>
+
+        <p>
+            Once you created a configuration you need to call <code>createConnection()</code> method
+            without connection options object. If you want to establish all connections from the ormconfig.json
+            then call a <code>createConnections()</code> method instead.
+        </p>
+
+        <h3 id="connection-environment-variables">
+            <a class="anchor" href="#connection-environment-variables"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Creating connection from environment variables
+        </h3>
+
+        <p>
+            TypeORM can create connection when you call <code>createConnection()</code> method without connection
+            options automatically from environment variables. These are environment variables you can to set:
+        </p>
+
+        <ul>
+            <li><b>TYPEORM_DRIVER_TYPE</b> - driver type. Can be "mysql", "mysql2", "postgres", "mariadb", "sqlite", "oracle" or "mssql".</li>
+            <li><b>TYPEORM_URL</b> - database connection url. Should be a string.</li>
+            <li><b>TYPEORM_HOST</b> - database host. Should be a string.</li>
+            <li><b>TYPEORM_PORT</b> - database access port. Should be a number.</li>
+            <li><b>TYPEORM_USERNAME</b> - database username. Should be a string.</li>
+            <li><b>TYPEORM_PASSWORD</b> - database user's password. Should be a string.</li>
+            <li><b>TYPEORM_SID</b> - database's SID. Used only for oracle databases. Should be a string.</li>
+            <li><b>TYPEORM_STORAGE</b> - database's storage url. Used only for sqlite databases. Should be a string.</li>
+            <li><b>TYPEORM_USE_POOL</b> - indicates if connection pooling should be enabled. By default its enabled. Should be boolean-like value.</li>
+            <li><b>TYPEORM_DRIVER_EXTRA</b> - extra options to be passed to the driver. Should be a serialized json string of options.</li>
+            <li><b>TYPEORM_AUTO_SCHEMA_SYNC</b> - indicates if automatic schema synchronization will be performed on each application run. Should be boolean-like value.</li>
+            <li><b>TYPEORM_ENTITIES</b> - list of directories containing entities to load. Should be string - directory names (can be patterns) split by a comma.</li>
+            <li><b>TYPEORM_SUBSCRIBERS</b> - list of directories containing subscribers to load. Should be string - directory names (can be patterns) split by a comma.</li>
+            <li><b>TYPEORM_ENTITY_SCHEMAS</b> - list of directories containing entity schemas to load. Should be string - directory names (can be patterns) split by a comma.</li>
+            <li><b>TYPEORM_NAMING_STRATEGIES</b> - list of directories containing custom naming strategies to load. Should be string - directory names (can be patterns) split by a comma.</li>
+            <li><b>TYPEORM_LOGGING_QUERIES</b> - indicates if each executed query must be logged. Should be boolean-like value.</li>
+            <li><b>TYPEORM_LOGGING_FAILED_QUERIES</b> - indicates if logger should log failed query's error. Should be boolean-like value.</li>
+            <li><b>TYPEORM_LOGGING_ONLY_FAILED_QUERIES</b> - indicates if only failed queries must be logged. Should be boolean-like value.</li>
+        </ul>
+
+        <h3 id="creating-connection-manually">
+            <a class="anchor" href="#creating-connection-manually"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Creating a new connection manually
+        </h3>
+
+        <p>Creating a new connection manually is easy as:</p>
+        <p><code class="language-typescript">let connection = new Connection(name: string, driver: Driver, logger: Logger);</code></p>
+        <p>
+            But in most of cases you may want to use <code>createConnection</code> or <code>ConnectionManager</code> methods instead.
+        </p>
 
         <h3 id="api.connection">
             <a class="anchor" href="#api.connection"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
@@ -349,6 +571,13 @@ connectionManager.createAndConnect(connectionOptions).then(connection => {
                 <code class="language-typescript">driver: Driver</code>
                 <p>
                     Database driver used by connection.
+                </p>
+            </li>
+            <li id="api.connection.logger">
+                <a class="anchor" href="#api.connection.logger"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">logger: Logger</code>
+                <p>
+                    Logger used by connection.
                 </p>
             </li>
             <li id="api.connection.entityMetadatas">
@@ -377,14 +606,6 @@ connectionManager.createAndConnect(connectionOptions).then(connection => {
                 <code class="language-typescript">entityManager: EntityManager</code>
                 <p>
                     Gets entity manager that allows to perform repository operations with any entity of this connection.
-                </p>
-            </li>
-            <li id="api.connection.reactiveEntityManager">
-                <a class="anchor" href="#api.connection.reactiveEntityManager"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">reactiveEntityManager: ReactiveEntityManager</code>
-                <p>
-                    Gets entity manager that allows to perform repository operations with any entity of this connection.
-                    This version of entity manager is reactive - works with Observables instead of Promises.
                 </p>
             </li>
             <li id="api.connection.connect">
@@ -514,32 +735,13 @@ connectionManager.createAndConnect(connectionOptions).then(connection => {
                     SpecificRepository is a special repository that contains specific and non standard repository methods.
                 </p>
             </li>
-            <li id="api.connection.getReactiveRepository">
-                <a class="anchor" href="#api.connection.getReactiveRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getReactiveRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): ReactiveRepository&lt;Entity&gt;</code>
+            <li id="api.connection.createEntityManagerWithSingleDatabaseConnection">
+                <a class="anchor" href="#api.connection.createEntityManagerWithSingleDatabaseConnection"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">createEntityManagerWithSingleDatabaseConnection(): EntityManager</code>
                 <p>
-                    Gets reactive repository for the given entity class or name.
-                    Reactive repositories has same functionality as regular repositories,
-                    the only difference is that reactive repository methods return Observable instead of Promise.
-                </p>
-            </li>
-            <li id="api.connection.getReactiveTreeRepository">
-                <a class="anchor" href="#api.connection.getReactiveTreeRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getReactiveTreeRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): ReactiveTreeRepository&lt;Entity&gt;</code>
-                <p>
-                    Gets reactive repository for the given entity class or name.
-                    Reactive repositories has same functionality as regular repositories,
-                    the only difference is that reactive repository methods return Observable instead of Promise.
-                </p>
-            </li>
-            <li id="api.connection.getSpecificReactiveRepository">
-                <a class="anchor" href="#api.connection.getSpecificReactiveRepository"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getSpecificReactiveRepository(entityClassOrName: ObjectType&lt;Entity&gt;|string): SpecificReactiveRepository&lt;Entity&gt;</code>
-                <p>
-                    Gets specific repository for the given entity class or name.
-                    SpecificReactiveRepository is a special repository that contains specific and non standard repository methods.
-                    Reactive repositories has same functionality as regular repositories,
-                    the only difference is that reactive repository methods return Observable instead of Promise.
+                    Creates a new entity manager with a single opened connection to the database.
+                    This may be useful if you want to perform all db queries within one connection.
+                    After finishing with entity manager, don't forget to release it, to release connection back to pool.
                 </p>
             </li>
         </ul>

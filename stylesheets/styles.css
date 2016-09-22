@@ -370,3 +370,8 @@ pre[class*="language-"] {
 pre[class*="language-"]:before, pre[class*="language-"]:after {
   display: none;
 }
+
+.simple-links a {
+  color: #666;
+  text-decoration: underline;
+}
