@@ -375,3 +375,12 @@ pre[class*="language-"]:before, pre[class*="language-"]:after {
   color: #666;
   text-decoration: underline;
 }
+
+p.secondary-text {
+  color: #999;
+}
+
+.learn-more a {
+  color: #358CCB;
+
+}

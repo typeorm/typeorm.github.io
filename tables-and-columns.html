@@ -26,10 +26,11 @@
             <li class="no-bullet">
                 <ul>
                     <li><a href="index.html#installation">Installation</a><br/></li>
-                    <li><a href="index.html#example">Example</a><br/></li>
+                    <li><a href="index.html#quick-start">Quick Start</a><br/></li>
                 </ul>
             </li>
-            <li><a href="connection.html">Connection and connection options</a><br/></li>             <li><a href="connection-manager.html">Connection Manager</a><br/></li>
+            <li><a href="connection.html">Connection and connection options</a><br/></li>
+            <li><a href="connection-manager.html">Connection Manager</a><br/></li>
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
@@ -47,7 +48,227 @@
     </header>
     <section>
 
-        <h2>TBD</h2>
+        <h2>Tables and Columns</h2>
+
+        <p>
+            In TypeORM tables are created from Entities.
+            <i>Entity</i> is your model decorated by a <code>@Table</code> decorator.
+            You can get entities from the database and insert/update/remove them from there.
+            Let's say we have a model:
+        </p>
+
+        <pre><code class="language-typescript">
+export class Photo {
+    id: number;
+    name: string;
+    description: string;
+    fileName: string;
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            Now lets make it entity:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table} from "typeorm";
+
+@Table()
+export class Photo {
+    id: number;
+    name: string;
+    description: string;
+    fileName: string;
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            Now we have a table, and each table consist of columns. Let's add a columns.
+            You can make any property of your model a column by using <code>@Column</code> decorator:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+
+@Table()
+export class Photo {
+
+    @Column()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Column()
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            Perfect. Now ORM will generate us a photo table with all its properties as columns.
+            But there is one thing left. Each entity must have a primary column.
+            This is requirement and you can't avoid it. To make a column a primary you need to use <code>@PrimaryColumn</code>
+            decorator.
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+
+@Table()
+export class Photo {
+
+    @PrimaryColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Column()
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            That's it. Your table with columns is ready.
+        </p>
+
+        <p>
+            Now, lets say you want to make your id column to be auto-generated
+            (this is known as auto-increment / sequence / generated identity column).
+            To do that you need to change your column's type to <code>integer</code> and set a
+            <code>{ generated: true }</code> in your primary column's options:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+
+@Table()
+export class Photo {
+
+    @PrimaryColumn("int", { generated: true })
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Column()
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            Now your photo's id will always be a generated, auto increment value.
+            Since this is a common task - to create a generated auto increment primary column,
+            there is a special decorator called <code>@PrimaryGeneratedColumn</code>.
+            Let's use it instead:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+
+@Table()
+export class Photo {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Column()
+    views: number;
+}
+        </code></pre>
+
+        <p>
+            Next step, lets fix our data types.
+            By default, string is mapped to a varchar(255)-like type (depend of database type).
+            Number is mapped to a float/double-like type (depend of database type).
+            We don't want all our columns to be limited varchars or excessive floats.
+            Lets add correct data types:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+
+@Table()
+export class Photo {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column({
+        length: 500
+    })
+    name: string;
+
+    @Column("text")
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Column("int")
+    views: number;
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {createConnection} from "typeorm";
+import {Photo} from "./entity/Photo";
+
+createConnection({
+    /* ... other options */
+    entities: [
+        Photo
+    ],
+});
+        </code></pre>
+
+        <p>
+            Alternatively, you can also include the whole directory with all entities:
+        </p>
+
+        <pre><code class="language-typescript">
+import {createConnection} from "typeorm";
+
+createConnection({
+    /* ... other options */
+    entities: [
+        __dirname + "/entity/*{.js,.ts}" // here we load all entities from entity directory
+    ],
+});
+        </code></pre>
+
+        <p>
+            Done. Now this entity can be used across ORM - can be loaded, inserted, updated and removed.
+        </p>
 
     </section>
     <footer>
