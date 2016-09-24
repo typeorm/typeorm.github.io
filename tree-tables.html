@@ -49,42 +49,7 @@
     </header>
     <section>
 
-        <h2>
-            Updating database schema
-        </h2>
-
-        <p>
-            One of the main responsibility of TypeORM is to make your database tables in sync with your entities
-            There are two ways that help you to achieve this:
-        </p>
-
-        <ul>
-            <li>
-                <p>Use <code>autoSchemaSync: true</code> in your connection options:</p>
-                <pre><code class="language-typescript">
-import {createConnection} from "typeorm";
-
-createConnection({
-    /* ... other options */
-    autoSchemaSync: true
-});
-        </code></pre>
-                This option makes your database to be in sync with entities each time you run this code.
-                This option is perfect during development, but in production you may not want this option to be enabled.
-            </li>
-            <li>
-                <p>Use [command line tools] and run schema sync manually in the command line:</p>
-                <code>typeorm schema:sync</code>
-                <p>This command will execute schema synchronization. Note, that to make command line tools to work,
-                you must create a [ormconfig.json] file.</p>
-            </li>
-        </ul>
-
-        <p>
-            Schema sync is extremely fast. We have checked it with > 300 tables,
-            in take only few seconds to sync a schema. So, if you are considering to disable <code>autoSchemaSync</code>
-            option during development because of performance issues, first check how fast or slow is it.
-        </p>
+        <h2>TBD</h2>
 
     </section>
     <footer>

@@ -34,7 +34,8 @@
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
-            <li><a href="table-inheritance.html">Table Inheritance</a><br/></li>
+
+
             <li><a href="relations.html">Relations</a><br/></li>
             <li><a href="indices.html">Indices</a><br/></li>
             <li><a href="repository.html">Repository</a><br/></li>
@@ -51,223 +52,392 @@
         <h2>Tables and Columns</h2>
 
         <p>
-            In TypeORM tables are created from Entities.
-            <i>Entity</i> is your model decorated by a <code>@Table</code> decorator.
-            You can get entities from the database and insert/update/remove them from there.
-            Let's say we have a model:
+
         </p>
 
+        <ul>
+            <li><a href="#table-decorators">Table decorators</a></li>
+            <li><a href="#table-options">Table options</a></li>
+            <li><a href="#column-decorators">Column decorators</a></li>
+            <li><a href="#column-options">Column options</a></li>
+            <li><a href="#column-types">Column types</a></li>
+            <li><a href="#embeddables">Embeddable tables and @Embedded decorator</a></li>
+            <li><a href="#tree-tables">Tree tables</a></li>
+            <li><a href="#table-inheritance">Table inheritance</a></li>
+        </ul>
+
+        <h3 id="table-decorators">
+            <a class="anchor" href="#table-decorators"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Table decorators
+        </h3>
+
+        <p>
+            There are several types of table decorators in TypeORM:
+        </p>
+
+        <ul>
+            <li>
+                <code>@Table</code>
+                <p>
+                    All regular entities must be marked with @Table decorator.
+                    Its a commonly used decorator.
+                </p>
+            </li>
+            <li>
+                <code>@AbstractTable</code>
+                <p>
+                    Abstract table is a table that contains columns and relations for all tables that will inherit this table.
+                    Database table for the abstract table is not created.
+                    Learn more about abstract tables in <a href="table-inheritance.html">table inheritance</a> section.
+                </p>
+            </li>
+            <li>
+                <code>@ClassTableChild</code>
+                <p>
+                    Special type of the table used in the class-table inherited tables.
+                    Learn more about class table child in <a href="table-inheritance.html">table inheritance</a> section.
+                </p>
+            </li>
+            <li>
+                <code>@SingleTableChild</code>
+                <p>
+                    Special type of the table used in the single-table inherited tables.
+                    Learn more about single table child in <a href="table-inheritance.html">table inheritance</a> section.
+                </p>
+            </li>
+            <li>
+                <code>@ClosureTable</code>
+                <p>
+                    Used on a tables that stores its children in a tree using closure deisgn pattern.
+                    Learn more about single table child in <a href="tree-tables.html">tree-tables</a> section.
+                </p>
+            </li>
+            <li>
+                <code>@EmbeddableTable</code>
+                <p>
+                    Embedded tables are separated classes which does not have thier own tables. Instead, all
+                    their columns are merged into tables of entities which use them in their properties
+                    decorated with <code>@Embedded</code> decorator.
+                </p>
+            </li>
+        </ul>
+
+        <h3 id="table-options">
+            <a class="anchor" href="#table-options"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Table options
+        </h3>
+
         <pre><code class="language-typescript">
-export class Photo {
-    id: number;
-    name: string;
-    description: string;
-    fileName: string;
-    views: number;
+export interface TableOptions {
+
+    /**
+     * Specifies a default order by used for queries from this table when no explicit order by is specified.
+     */
+    readonly orderBy?: OrderByCondition|((object: any) => OrderByCondition|any);
+
+    /**
+     * Table's database engine type (like "InnoDB", "MyISAM", etc).
+     * Note that it used only during table creation.
+     * If you update this value and table is already created, it will not change table's engine type.
+     */
+    readonly engine?: string;
+
 }
         </code></pre>
 
+        <h3 id="column-decorators">
+            <a class="anchor" href="#column-decorators"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Column decorators
+        </h3>
+
         <p>
-            Now lets make it entity:
+            There are several types of column decorators in TypeORM:
         </p>
 
-        <pre><code class="language-typescript">
-import {Table} from "typeorm";
+        <ul>
+            <li>
+                <code>@Column</code>
+                <p>
+                    Creates a column for entity property in the database.
+                    If column name is not specified then its guessed from the entity's property name.
+                    If column type is not specified then its guessed from the entity's property type.
+                </p>
+            </li>
+            <li>
+                <code>@PrimaryColumn</code>
+                <p>
+                    Creates a column in the database with a Primary Key.
+                    Each entity must have at least one primary column.
+                    You entity can have multiple primary columns,
+                    in such case composed primary key will be created in the database.
+                </p>
+            </li>
+            <li>
+                <code>@PrimaryGeneratedColumn</code>
+                <p>
+                    Creates an integer column with a primary key in the database.
+                    Each entity must have at least one primary column.
+                    Entities with generated columns cannot have multiple primary keys.
+                </p>
+            </li>
+            <li>
+                <code>@CreateDateColumn</code>
+                <p>
+                    Creates a data column in the database which will contain a date when entity was first time persisted.
+                    Column in the database automatically inserted when you first time persist entity.
+                </p>
+            </li>
+            <li>
+                <code>@UpdateDateColumn</code>
+                <p>
+                    Creates a data column in the database which will always contain a date of last entity persistence.
+                    Column in the database automatically updated each time you persist entity.
+                </p>
+            </li>
+            <li>
+                <code>@VersionColumn</code>
+                <p>
+                    Creates an integer column in the database which will contain a number - version of the entity,
+                    or how many times entity was updated.
+                    Column in the database automatically updated each time you persist entity.
+                </p>
+            </li>
+            <li>
+                <code>@DiscriminatorColumn</code>
+                <p>
+                    DiscriminatorColumn is a special type column used on entity class (not entity property) and
+                    creates a special column which will contain an entity type.
+                    This type is required for entities which use single table inheritance pattern.
+                    Learn more about single table inheritance in <a href="table-inheritance.html">table inheritance</a>
+                </p>
+            </li>
+        </ul>
 
-@Table()
-export class Photo {
-    id: number;
-    name: string;
-    description: string;
-    fileName: string;
-    views: number;
+        <h3 id="column-options">
+            <a class="anchor" href="#column-options"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Column options
+        </h3>
+
+        <pre><code class="language-typescript">
+export interface ColumnOptions {
+
+    /**
+     * Column type. More about column types described in next section.
+     */
+    readonly type?: ColumnType;
+
+    /**
+     * Column name in the database.
+     */
+    readonly name?: string;
+
+    /**
+     * Column type's length. Used only on some column types.
+     * For example type = "string" and length = "100" means that ORM will create a column with type varchar(100).
+     */
+    readonly length?: string;
+
+    /**
+     * Indicates if this column is PRIMARY.
+     * Same can be achieved if @PrimaryColumn decorator will be used.
+     */
+    readonly primary?: boolean;
+
+    /**
+     * Specifies if this column will use auto increment (sequence, generated identity).
+     * Note that only one column in entity can be marked as generated, and it must be a primary column.
+     */
+    readonly generated?: boolean;
+
+    /**
+     * Specifies if column's value must be unique or not.
+     */
+    readonly unique?: boolean;
+
+    /**
+     * Indicates if column's value can be set to NULL.
+     */
+    readonly nullable?: boolean;
+
+    /**
+     * Default database value.
+     */
+    readonly default?: any;
+
+    /**
+     * The precision for a decimal (exact numeric) column (applies only for decimal column), which is the maximum
+     * number of digits that are stored for the values.
+     */
+    readonly precision?: number;
+
+    /**
+     * The scale for a decimal (exact numeric) column (applies only for decimal column), which represents the number
+     * of digits to the right of the decimal point and must not be greater than precision.
+     */
+    readonly scale?: number;
+
+    /**
+     * Indicates if this date column will contain a timezone.
+     * Used only for date-typed column types.
+     * Note that timezone option is not supported by all databases (only postgres for now).
+     */
+    readonly timezone?: boolean;
+
 }
         </code></pre>
 
+        <h3 id="column-types">
+            <a class="anchor" href="#column-types"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Column types
+        </h3>
+
+        <ul>
+            <li>
+                <code>string</code>
+            </li>
+            <li>
+                <code>text</code>
+            </li>
+            <li>
+                <code>number</code>
+            </li>
+            <li>
+                <code>integer</code>
+            </li>
+            <li>
+                <code>int</code>
+            </li>
+            <li>
+                <code>smallint</code>
+            </li>
+            <li>
+                <code>bigint</code>
+            </li>
+            <li>
+                <code>float</code>
+            </li>
+            <li>
+                <code>double</code>
+            </li>
+            <li>
+                <code>decimal</code>
+            </li>
+            <li>
+                <code>date</code>
+            </li>
+            <li>
+                <code>time</code>
+            </li>
+            <li>
+                <code>datetime</code>
+            </li>
+            <li>
+                <code>boolean</code>
+            </li>
+            <li>
+                <code>json</code>
+            </li>
+            <li>
+                <code>simple_array</code>
+            </li>
+        </ul>
+
+        <h3 id="embeddables">
+            <a class="anchor" href="#embeddables"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Embeddable tables and @Embedded decorator
+        </h3>
+
         <p>
-            Now we have a table, and each table consist of columns. Let's add a columns.
-            You can make any property of your model a column by using <code>@Column</code> decorator:
+            Sometimes in your app you have object that contains another object,
+            but you don't want to create separate tables in your app for them.
+            You only want to create a single table and storage all from both objects in a single table.
+            To achieve that mark your secondary entity, that should be merged into primary entity with
+            <code>@EmbeddableTable</code> decorator:
         </p>
 
         <pre><code class="language-typescript">
 import {Table, Column} from "typeorm";
 
-@Table()
-export class Photo {
-
-    @Column()
-    id: number;
-
-    @Column()
-    name: string;
-
-    @Column()
-    description: string;
-
-    @Column()
-    fileName: string;
-
-    @Column()
-    views: number;
-}
-        </code></pre>
-
-        <p>
-            Perfect. Now ORM will generate us a photo table with all its properties as columns.
-            But there is one thing left. Each entity must have a primary column.
-            This is requirement and you can't avoid it. To make a column a primary you need to use <code>@PrimaryColumn</code>
-            decorator.
-        </p>
-
-        <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
-
-@Table()
-export class Photo {
-
-    @PrimaryColumn()
-    id: number;
-
-    @Column()
-    name: string;
-
-    @Column()
-    description: string;
-
-    @Column()
-    fileName: string;
-
-    @Column()
-    views: number;
-}
-        </code></pre>
-
-        <p>
-            That's it. Your table with columns is ready.
-        </p>
-
-        <p>
-            Now, lets say you want to make your id column to be auto-generated
-            (this is known as auto-increment / sequence / generated identity column).
-            To do that you need to change your column's type to <code>integer</code> and set a
-            <code>{ generated: true }</code> in your primary column's options:
-        </p>
-
-        <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
-
-@Table()
-export class Photo {
-
-    @PrimaryColumn("int", { generated: true })
-    id: number;
-
-    @Column()
-    name: string;
-
-    @Column()
-    description: string;
-
-    @Column()
-    fileName: string;
-
-    @Column()
-    views: number;
-}
-        </code></pre>
-
-        <p>
-            Now your photo's id will always be a generated, auto increment value.
-            Since this is a common task - to create a generated auto increment primary column,
-            there is a special decorator called <code>@PrimaryGeneratedColumn</code>.
-            Let's use it instead:
-        </p>
-
-        <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
-
-@Table()
-export class Photo {
-
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
-    name: string;
-
-    @Column()
-    description: string;
-
-    @Column()
-    fileName: string;
-
-    @Column()
-    views: number;
-}
-        </code></pre>
-
-        <p>
-            Next step, lets fix our data types.
-            By default, string is mapped to a varchar(255)-like type (depend of database type).
-            Number is mapped to a float/double-like type (depend of database type).
-            We don't want all our columns to be limited varchars or excessive floats.
-            Lets add correct data types:
-        </p>
-
-        <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
-
-@Table()
-export class Photo {
-
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column({
-        length: 500
-    })
-    name: string;
-
-    @Column("text")
-    description: string;
-
-    @Column()
-    fileName: string;
+@EmbeddableTable()
+export class PhotoMetadata {
 
     @Column("int")
-    views: number;
+    height: number;
+
+    @Column("int")
+    width: number;
+
+    @Column()
+    orientation: string;
+
+    @Column()
+    compressed: boolean;
+
+    @Column()
+    comment: string;
+
 }
         </code></pre>
 
-        <pre><code class="language-typescript">
-import {createConnection} from "typeorm";
-import {Photo} from "./entity/Photo";
-
-createConnection({
-    /* ... other options */
-    entities: [
-        Photo
-    ],
-});
-        </code></pre>
-
         <p>
-            Alternatively, you can also include the whole directory with all entities:
+            Add object relation in your main object and mark it with <code>Embedded</code> decorator:
         </p>
 
         <pre><code class="language-typescript">
-import {createConnection} from "typeorm";
+import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+import {PhotoMetadata} from "./PhotoMetadata";
 
-createConnection({
-    /* ... other options */
-    entities: [
-        __dirname + "/entity/*{.js,.ts}" // here we load all entities from entity directory
-    ],
-});
+@Table()
+export class Photo {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    fileName: string;
+
+    @Embedded(type => PhotoMetadata)
+    metadata: PhotoMetadata;
+}
         </code></pre>
 
         <p>
-            Done. Now this entity can be used across ORM - can be loaded, inserted, updated and removed.
+            That's all, now you can create and persist photo object with photo metadata inside,
+            and all the data will be saved into a single table.
+        </p>
+
+        <h3 id="tree-tables">
+            <a class="anchor" href="#tree-tables"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Tree tables
+        </h3>
+
+        <p>
+            TypeORM supports <a href="https://en.wikipedia.org/wiki/Adjacency_list">Adjacency list</a> and
+            <a href="http://www.slideshare.net/billkarwin/models-for-hierarchical-data">Closure table</a> patterns
+            of storing tree structures.
+        </p>
+
+        <p>
+            To learn more about closure table take a look at this awesome
+            <a href="http://www.slideshare.net/billkarwin/models-for-hierarchical-data">presentation</a> by Bill Karwin.
+        </p>
+
+        <h3 id="table-inheritance">
+            <a class="anchor" href="#table-inheritance"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Table inheritance
+        </h3>
+
+        <p>
+            TypeORM supports <a href="http://martinfowler.com/eaaCatalog/concreteTableInheritance.html">Concrete table inheritance</a>,
+            <a href="http://martinfowler.com/eaaCatalog/singleTableInheritance.html">Single table inheritance</a>
+            and <a href="http://martinfowler.com/eaaCatalog/classTableInheritance.html">Class table inheritance</a>
+            patterns of storing inherited data.
         </p>
 
     </section>
