@@ -29,10 +29,13 @@
                     <li><a href="index.html#quick-start">Quick Start</a><br/></li>
                 </ul>
             </li>
-            <li><a href="connection.html">Connection and connection options</a><br/></li>             <li><a href="connection-manager.html">Connection Manager</a><br/></li>
+            <li><a href="connection.html">Connection and connection options</a><br/></li>
+            <li><a href="connection-manager.html">Connection Manager</a><br/></li>
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
+
+
             <li><a href="relations.html">Relations</a><br/></li>
             <li><a href="indices.html">Indices</a><br/></li>
             <li><a href="repository.html">Repository</a><br/></li>
@@ -46,7 +49,31 @@
     </header>
     <section>
 
-        <h2>TBD</h2>
+        <h2>
+            Using service container
+        </h2>
+
+        <p>
+            In TypeORM you can use service container.
+            Service container allows to inject custom services in some places,
+            like in subscribers or custom naming strategies.
+            Or for example, you can get access to <code>ConnectionManager</code> from any place using service container.
+        </p>
+
+        <p>
+            Here is example how you can setup <a href="https://github.com/pleerock/typedi">typedi</a> service container with TypeORM.
+            But note, that you can setup any service container with TypeORM.
+        </p>
+
+        <pre><code class="language-typescript">
+import {createConnection, ConnectionOptions} from "typeorm";
+import {Container} from "typedi";
+
+// its important to setup container for you start to work with TypeORM
+useContainer(Container);
+createConnection({/* ... */);
+        </code></pre>
+
 
     </section>
     <footer>
