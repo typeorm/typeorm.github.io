@@ -75,7 +75,7 @@
 
         <p>
             Subscribers are separate classes that implement <code>EntitySubscriberInterface</code> interface
-            and marked with <code>@EntityEventSubscriber()</code> decorator.
+            and marked with <code>@EventSubscriber()</code> decorator.
         </p>
 
         <p>
@@ -145,9 +145,9 @@ export interface EntitySubscriberInterface&lt;Entity&gt; {
         </p>
 
         <pre><code class="language-typescript">
-import {EntityEventSubscriber, EntitySubscriberInterface} from "typeorm";
+import {EventSubscriber, EntitySubscriberInterface} from "typeorm";
 
-@EntityEventSubscriber()
+@EventSubscriber()
 export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt; {
 
 }
@@ -159,9 +159,9 @@ export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt
         </p>
 
         <pre><code class="language-typescript">
-import {EntityEventSubscriber, EntitySubscriberInterface} from "typeorm";
+import {EventSubscriber, EntitySubscriberInterface} from "typeorm";
 
-@EntityEventSubscriber()
+@EventSubscriber()
 export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt; {
 
     beforeInsert(event: InsertEvent&lt;any&gt;) {
@@ -176,9 +176,9 @@ export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt
         </p>
 
         <pre><code class="language-typescript">
-import {EntityEventSubscriber, EntitySubscriberInterface} from "typeorm";
+import {EventSubscriber, EntitySubscriberInterface} from "typeorm";
 
-@EntityEventSubscriber()
+@EventSubscriber()
 export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt; {
 
     beforeInsert(event: InsertEvent&lt;any&gt;) {
@@ -219,9 +219,9 @@ export class EverythingSubscriber implements EntitySubscriberInterface&lt;any&gt
         </p>
 
         <pre><code class="language-typescript">
-import {EntityEventSubscriber, EntitySubscriberInterface} from "typeorm";
+import {EventSubscriber, EntitySubscriberInterface} from "typeorm";
 
-@EntityEventSubscriber()
+@EventSubscriber()
 export class EverythingSubscriber implements EntitySubscriberInterface&lt;Post&gt; {
 
     listenTo() {
