@@ -423,9 +423,131 @@ export class Photo {
             of storing tree structures.
         </p>
 
+        <h4 id="adjacency-list">
+            <a class="anchor" href="#adjacency-list"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Adjacency list
+        </h4>
+
         <p>
+            Adjacency list is a simple model with self-referencing.
+            Benefit of this approach is simplicity, drawback is that you can't load big tree an once because of joins limitation.
+            Let's create an example:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+
+@Table()
+export class Category {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @OneToMany(type => Category, category => category.children)
+    parent: Category;
+
+    @ManyToOne(type => Category, category => category.parent)
+    children: Category;
+}
+        </code></pre>
+
+        <h4 id="closure-table">
+            <a class="anchor" href="#closure-table"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Closure table
+        </h4>
+
+        <p>
+            Closure table stores relations between parent and child in a separate table in a special way.
+            Its efficient in both reads and writes.
             To learn more about closure table take a look at this awesome
             <a href="http://www.slideshare.net/billkarwin/models-for-hierarchical-data">presentation</a> by Bill Karwin.
+            Lets refactor our category example to use closure table:
+        </p>
+
+        <pre><code class="language-typescript">
+import {ClosureTable, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+
+@ClosureTable()
+export class Category {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    description: string;
+
+    @TreeChildren({ cascadeAll: true })
+    children: Category;
+
+    @TreeParent()
+    parent: Category;
+
+    @TreeLevelColumn()
+    level: number;
+}
+        </code></pre>
+
+        <p>
+            With closure table you can use <code>TreeRepository</code> with special methods to work with trees, such as:
+        </p>
+
+        <ul>
+            <li>
+                <code class="language-typescript">findRoots(): Promise&lt;Entity[]&gt;</code>
+                - Roots are entities that have no ancestors. Finds them all.
+            </li>
+            <li>
+                <code class="language-typescript">createDescendantsQueryBuilder(alias: string, closureTableAlias: string, entity: Entity): QueryBuilder&lt;Entity[]&gt;</code>
+                - Creates a query builder used to get descendants of the entities in a tree.
+            </li>
+            <li>
+                <code class="language-typescript">findDescendants(entity: Entity): Promise&lt;Entity[]&gt;</code>
+                - Gets all children (descendants) of the given entity. Returns them all in a flat array.
+            </li>
+            <li>
+                <code class="language-typescript">findDescendantsTree(entity: Entity): Promise&lt;Entity&gt;</code>
+                - Gets all children (descendants) of the given entity. Returns them in a tree - nested into each other.
+            </li>
+            <li>
+                <code class="language-typescript">countDescendants(entity: Entity): Promise&lt;number&gt;</code>
+                - Gets number of descendants of the entity.
+            </li>
+            <li>
+                <code class="language-typescript">createAncestorsQueryBuilder(alias: string, closureTableAlias: string, entity: Entity): QueryBuilder&lt;Entity[]&gt;</code>
+                - Creates a query builder used to get ancestors of the entities in the tree.
+            </li>
+            <li>
+                <code class="language-typescript">findAncestors(entity: Entity): Promise&lt;Entity[]&gt;</code>
+                - Gets all parents (ancestors) of the given entity. Returns them all in a flat array.
+            </li>
+            <li>
+                <code class="language-typescript">findAncestorsTree(entity: Entity): Promise&lt;Entity&gt;</code>
+                - Gets all parents (ancestors) of the given entity. Returns them in a tree - nested into each other.
+            </li>
+            <li>
+                <code class="language-typescript">countAncestors(entity: Entity): Promise&lt;number&gt;</code>
+                - Gets number of ancestors of the entity.
+            </li>
+        </ul>
+
+        <p>
+            You can access tree repository via connection <code class="language-typescript">connection.getTreeRepository(Category)</code>.
+        </p>
+
+        <p>
+            In the future versions TypeORM will support materialized path and nested set patterns.
+        </p>
+
+        <p>
         </p>
 
         <h3 id="table-inheritance">
@@ -439,6 +561,208 @@ export class Photo {
             and <a href="http://martinfowler.com/eaaCatalog/classTableInheritance.html">Class table inheritance</a>
             patterns of storing inherited data.
         </p>
+
+        <h4 id="concrete-table-inheritance">
+            <a class="anchor" href="#concrete-table-inheritance"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Concrete table inheritance
+        </h4>
+
+        <p>
+            Concrete table inheritance is possible throw the child classes decorated with <code>@AbstractTable</code> decorator.
+            Example:
+        </p>
+
+        <pre><code class="language-typescript">
+import {AbstractTable, Column, PrimaryGeneratedColumn} from "typeorm";
+
+@AbstractTable()
+export class BaseEntity {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    title: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+import {Person} from "./Person";
+
+@Table()
+export class Employee extends Person {
+
+    @Column()
+    salary: number;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+import {Person} from "./Person";
+
+@Table()
+export class Student extends Person {
+
+    @Column()
+    faculty: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {Table, Column} from "typeorm";
+import {Person} from "./Person";
+
+@Table()
+export class Homesitter extends Person {
+
+    @Column()
+    numberOfKids: number;
+
+}
+        </code></pre>
+
+        <h4 id="single-table-inheritance">
+            <a class="anchor" href="#single-table-inheritance"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Single table inheritance
+        </h4>
+
+        <p>
+            Single table inheritance is when you have multiple entities and they all are mapped into a single table.
+            Example:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
+
+@Table()
+@TableInheritance("single-table")
+@DiscriminatorColumn({ name: "type", type: "string"})
+export class Person {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    firstName: string;
+
+    @Column()
+    lastName: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {SingleTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@SingleTableChild()
+export class Employee extends Person {
+
+    @Column()
+    salary: number;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {SingleTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@SingleTableChild()
+export class Student extends Person {
+
+    @Column()
+    faculty: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {SingleTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@SingleTableChild()
+export class Homesitter extends Person {
+
+    @Column()
+    numberOfKids: number;
+
+}
+        </code></pre>
+
+        <h4 id="class-table-inheritance">
+            <a class="anchor" href="#class-table-inheritance"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Class table inheritance
+        </h4>
+
+        <p>
+            Class table inheritance uses separate table for each class in your inheritance hierarchy.
+            Example:
+        </p>
+
+        <pre><code class="language-typescript">
+import {Table, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
+
+@Table()
+@TableInheritance("class-table")
+@DiscriminatorColumn({ name: "type", type: "string"})
+export class Person {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    firstName: string;
+
+    @Column()
+    lastName: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {ClassTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@ClassTableChild()
+export class Employee extends Person {
+
+    @Column()
+    salary: number;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {ClassTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@ClassTableChild()
+export class Student extends Person {
+
+    @Column()
+    faculty: string;
+
+}
+        </code></pre>
+
+        <pre><code class="language-typescript">
+import {ClassTableChild, Column} from "typeorm";
+import {Person} from "./Person";
+
+@ClassTableChild()
+export class Homesitter extends Person {
+
+    @Column()
+    numberOfKids: number;
+
+}
+        </code></pre>
 
     </section>
     <footer>
