@@ -86,6 +86,34 @@ export class Post {
             Second parameter can be used only if you are using <code>@Index</code> decorator on entity class.
         </p>
 
+        <p>
+            Also you can set the index to be unique using special index option. Here is an example:
+        </p>
+        <pre><code class="language-typescript">
+import {Table, Index, PrimaryGeneratedColumn, Column} from "typeorm";
+
+@Table()
+@Index("my_index_with_id_and_text", ["id", "text"], { unique: true }) // first style
+@Index("my_index_with_id_and_title", (post: Post) => [post.id, post.title], { unique: true }) // alternative, type-safe style
+export class Post {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    @Index()
+    title: string;
+
+    @Column()
+    text: string;
+
+    @Column()
+    @Index({ unique: true })
+    likesCount: number;
+
+}
+        </code></pre>
+
     </section>
     <footer>
         <p>
