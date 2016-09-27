@@ -69,7 +69,7 @@
 import {createConnection, ConnectionOptions} from "typeorm";
 import {Container} from "typedi";
 
-// its important to setup container for you start to work with TypeORM
+// its important to setup container before you start to work with TypeORM
 useContainer(Container);
 createConnection({/* ... */);
         </code></pre>
