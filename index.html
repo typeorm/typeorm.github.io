@@ -380,6 +380,7 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
+import "reflect-metadata";
 import {createConnection} from "typeorm";
 import {Photo} from "./entity/Photo";
 
@@ -948,7 +949,7 @@ createConnection(/*...*/).then(async connection => {
 
         <p>We can setup cascade options in our relations, in the cases when we want
             our related object to be persisted whenever other object is saved. Let's
-            change our photo's `@OneToOne` decorator a bit:</p>
+            change our photo's @OneToOne decorator a bit:</p>
 
         <pre><code class="language-typescript">
 export class Photo {
@@ -1020,7 +1021,7 @@ createConnection(options).then(async connection => {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
+import {Table, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 import {Photo} from "./Photo";
 
 @Table()
@@ -1048,7 +1049,7 @@ export class Author {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToOne} from "typeorm";
+import {Table, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
 import {PhotoMetadata} from "./PhotoMetadata";
 import {Author} from "./Author";
 
@@ -1235,7 +1236,7 @@ let photos = await photoRepository
         </p>
         <p>
             You'll use query builder in your application a lot.
-            Learn more about QueryBuilder [here].
+            Learn more about QueryBuilder <a href="query-builder.html">here</a>.
         </p>
 
         <h3 id="learn-more">
@@ -1256,7 +1257,8 @@ let photos = await photoRepository
             <li><a href="repository.html">Repository</a><br/></li>
             <li><a href="query-builder.html">Query Builder</a><br/></li>
             <li><a href="entity-manager.html">Entity Manager</a><br/></li>
-            <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   <li><a href="using-service-container.html">Using service container</a><br/></li>
+            <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   
+            <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
             <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
         </ul>
