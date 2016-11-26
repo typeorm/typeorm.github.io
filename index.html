@@ -135,6 +135,24 @@
             </li>
         </ol>
 
+        <h5>TypeScript configuration</h5>
+
+        <p>
+            Also make sure you are using TypeScript compiler version > <b>2.1</b> and you have enabled following settings in <b>tsconfig.json</b>:
+        </p>
+
+        <pre><code class="language-json">
+"emitDecoratorMetadata": true,
+"experimentalDecorators": true,
+        </code></pre>
+
+        <h5>Node.js version</h5>
+
+        <p>
+            TypeORM was checked with Node.JS version 6 and above.
+            If you have errors during app bootstrap, try to upgrade your node.js version to the latest version.
+        </p>
+
         <h3 id="quick-start">
             <a class="anchor" href="#quick-start"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
             Quick Start
@@ -399,7 +417,7 @@ createConnection({
     autoSchemaSync: true,
 }).then(connection => {
     // here you can start to work with your entities
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <p>
@@ -448,7 +466,7 @@ createConnection({
     autoSchemaSync: true,
 }).then(connection => {
     // here you can start to work with your entities
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-run">
@@ -506,7 +524,7 @@ createConnection(/*...*/).then(connection => {
                 console.log("Photo has been saved");
             });
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-async-await">
@@ -534,7 +552,7 @@ createConnection(/*...*/).then(async connection => {
     await connection.entityManager.persist(photo);
     console.log("Photo has been saved");
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-entity-manager">
@@ -559,7 +577,7 @@ createConnection(/*...*/).then(async connection => {
     let savedPhotos = await connection.entityManager.find(Photo);
     console.log("All photos from the db: ", savedPhotos);
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <p>
@@ -598,7 +616,7 @@ createConnection(/*...*/).then(async connection => {
     let savedPhotos = await photoRepository.find();
     console.log("All photos from the db: ", savedPhotos);
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-load">
@@ -636,7 +654,7 @@ createConnection(/*...*/).then(async connection => {
     console.log("All photos: ", allPublishedPhotos);
     console.log("Photos count: ", allPublishedPhotos);
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-update">
@@ -659,7 +677,7 @@ createConnection(/*...*/).then(async connection => {
     photoToUpdate.name = "Me, my friends and polar bears";
     await photoRepository.persist(photoToUpdate);
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <p>
@@ -685,7 +703,7 @@ createConnection(/*...*/).then(async connection => {
     let photoToRemove = await photoRepository.findOneById(1);
     await photoRepository.remove(photoToRemove);
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <p>
@@ -813,7 +831,8 @@ createConnection(/*...*/).then(async connection => {
 
     // done
     console.log("metadata is saved, and relation between metadata and photo is created in the database too");
-});
+
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-one-to-one-inverse">
@@ -901,8 +920,7 @@ createConnection(/*...*/).then(async connection => {
         }
     });
 
-
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <p>
@@ -939,7 +957,7 @@ createConnection(/*...*/).then(async connection => {
             .innerJoinAndSelect("photo.metadata")
             .getResults();
 
-});
+}).catch(error => console.log(error));
         </code></pre>
 
         <h4 id="example-cascades">
@@ -1004,8 +1022,9 @@ createConnection(options).then(async connection => {
     // first we should persist a photo
     await photoRepository.persist(photo);
 
-    console.log("Photo is saved, photo metadata is saved too.")
-});
+    console.log("Photo is saved, photo metadata is saved too.");
+
+}).catch(error => console.log(error));
         </code></pre>
 
 
