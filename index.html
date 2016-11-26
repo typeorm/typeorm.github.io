@@ -135,18 +135,18 @@
             </li>
         </ol>
 
-        <h5>TypeScript configuration</h5>
+        <h4>TypeScript configuration</h4>
 
         <p>
             Also make sure you are using TypeScript compiler version > <b>2.1</b> and you have enabled following settings in <b>tsconfig.json</b>:
         </p>
 
-        <pre><code class="language-json">
+        <pre><code class="language-javascript">
 "emitDecoratorMetadata": true,
 "experimentalDecorators": true,
         </code></pre>
 
-        <h5>Node.js version</h5>
+        <h4>Node.js version</h4>
 
         <p>
             TypeORM was checked with Node.JS version 6 and above.
@@ -1123,7 +1123,7 @@ export class Photo {
 
         <p>Lets create a many-to-one / many-to-many relation. Lets say a photo can
         be in many albums, and multiple can have many photos. Lets create an
-        `Album` class:</p>
+        <b>Album</b> class:</p>
 
         <pre><code class="language-typescript">
 import {Table, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
@@ -1147,9 +1147,9 @@ export class Album {
 }
         </code></pre>
 
-        <p>`@JoinTable` is required to specify that this is owner side of the relationship.</p>
+        <p><b>@JoinTable</b> is required to specify that this is owner side of the relationship.</p>
 
-        <p>Now lets add inverse side of our relation to the `Photo` class:</p>
+        <p>Now lets add inverse side of our relation to the <b>Photo</b> class:</p>
 
         <pre><code class="language-typescript">
 export class Photo {
@@ -1177,7 +1177,7 @@ export class Photo {
 </pre>
 
 
-        <p>Don't forget to register `Album` class for your connection in the ORM:</p>
+        <p>Don't forget to register <b>Album</b> class for your connection in the ORM:</p>
 
         <pre><code class="language-typescript">
 const options: CreateConnectionOptions = {
