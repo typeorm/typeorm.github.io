@@ -954,7 +954,7 @@ createConnection(/*...*/).then(async connection => {
     /*...*/
     let photoRepository = connection.getRepository(Photo);
     let photos = await photoRepository.createQueryBuilder("photo")
-            .innerJoinAndSelect("photo.metadata")
+            .innerJoinAndSelect("photo.metadata","metadata")
             .getResults();
 
 }).catch(error => console.log(error));
@@ -1014,7 +1014,8 @@ createConnection(options).then(async connection => {
     metadata.compressed = true;
     metadata.comment = "cybershoot";
     metadata.orientation = "portait";
-    metadata.photo = photo; // this way we connect them
+
+    photo.metadata = metadata; // this way we connect them
 
     // get repository
     let photoRepository = connection.getRepository(Photo);
@@ -1186,7 +1187,7 @@ const options: CreateConnectionOptions = {
 };
         </code></pre>
 
-        <p>Now lets insert author and photo to our database:</p>
+        <p>Now lets insert albums and photos to our database:</p>
 
         <pre><code class="language-typescript">
 let connection = await createConnection(options);
@@ -1203,17 +1204,19 @@ let photo1 = new Photo();
 photo1.name = "Me and Bears";
 photo1.description = "I am near polar bears";
 photo1.filename = "photo-with-bears.jpg"
+photo1.albums.push(album1);
 
 let photo2 = new Photo();
 photo2.name = "Me and Bears";
 photo2.description = "I am near polar bears";
 photo2.filename = "photo-with-bears.jpg"
+photo2.albums.push(album2);
 
 // get entity repository
 let photoRepository = connection.getRepository(Photo);
 
 // first save a first photo
-// we only save a photos, albums are persisted
+// we only save the photos, albums are persisted
 // automatically because of cascade options
 await photoRepository.persist(photo1);
 
@@ -1236,15 +1239,15 @@ console.log("Both photos have been saved");
 let photoRepository = connection.getRepository(Photo);
 let photos = await photoRepository
     .createQueryBuilder("photo") // first argument is an alias. Alias is what you are selecting - photos. You must specify it.
-    .innerJoinAndSelect("photo.metadata")
-    .leftJoinAndSelect("photo.albums")
+    .innerJoinAndSelect("photo.metadata", "metadata")
+    .leftJoinAndSelect("photo.albums", "albums")
     .where("photo.isPublished=true")
     .andWhere("(photo.name=:photoName OR photo.name=:bearName)")
     .orderBy("photo.id", "DESC")
     .setFirstResult(5)
     .setMaxResults(10)
-    .setParameters({ photoName: "My", bearName: "Mishka" })
-    .getResults();
+    .addParameters({ photoName: "My", bearName: "Mishka" })
+    .getMany();
 </code></pre>
 
         <p>
