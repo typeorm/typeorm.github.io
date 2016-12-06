@@ -41,6 +41,7 @@
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
             <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
         </ul>
 
     </header>
@@ -49,6 +50,7 @@
             <a class="anchor" href="#what-is-typeorm"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
             What is TypeORM?
         </h2>
+        <pre class="announcement">0.0.3 is released! Most notable changes are in the <a href="https://github.com/typeorm/typeorm/blob/master/CHANGELOG.md">changelog</a>.</pre>
         <p>
             TypeORM is an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>
             (ORM) for node.js written in
@@ -127,8 +129,12 @@
                         <code>npm install mssql --save</code>
                     </li>
                     <li>
-                        <p>for <b>Oracle</b></p>
+                        <p>for <b>Oracle</b> (experimental)</p>
                         <code>npm install oracledb --save</code>
+                        <p>
+                            To make oracle driver to work you need to follow installation instructions from
+                            <a href="https://github.com/oracle/node-oracledb">their</a> site.
+                        </p>
                     </li>
                 </ul>
                 <p>Install only one of them, depend on which database you use.</p>
@@ -151,6 +157,15 @@
         <p>
             TypeORM was tested with Node.JS version 6 and above.
             If you have errors during app bootstrap, try to upgrade your node.js version to the latest version.
+        </p>
+
+        <h4>Usage in the browser with WebSQL</h4>
+
+        <p>
+            TypeORM works in the browser and has experimental support of WebSQL.
+            If you want to use TypeORM in the browser then you need to do <code>npm i typeorm-browser</code>.
+            More information about it in <a href="./usage-in-browser.html">this page</a>.
+            Also take a look on <a href="https://github.com/typeorm/browser-example">this sample</a>.
         </p>
 
         <h3 id="quick-start">
@@ -955,7 +970,7 @@ createConnection(/*...*/).then(async connection => {
     let photoRepository = connection.getRepository(Photo);
     let photos = await photoRepository.createQueryBuilder("photo")
             .innerJoinAndSelect("photo.metadata","metadata")
-            .getResults();
+            .getMany();
 
 }).catch(error => console.log(error));
         </code></pre>
@@ -1246,7 +1261,7 @@ let photos = await photoRepository
     .orderBy("photo.id", "DESC")
     .setFirstResult(5)
     .setMaxResults(10)
-    .addParameters({ photoName: "My", bearName: "Mishka" })
+    .setParameters({ photoName: "My", bearName: "Mishka" })
     .getMany();
 </code></pre>
 
@@ -1282,7 +1297,7 @@ let photos = await photoRepository
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   
             <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
-            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li><li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
         </ul>
 
         <p>

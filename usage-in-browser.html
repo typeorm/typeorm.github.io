@@ -34,8 +34,6 @@
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
-
-
             <li><a href="relations.html">Relations</a><br/></li>
             <li><a href="indices.html">Indices</a><br/></li>
             <li><a href="repository.html">Repository</a><br/></li>
@@ -43,47 +41,109 @@
             <li><a href="entity-manager.html">Entity Manager</a><br/></li>
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
-            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li><li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
         </ul>
 
     </header>
     <section>
 
-        <h2>
-            Updating database schema
-        </h2>
+        <h2>Use TypeORM in the browser</h2>
 
         <p>
-            One of the main responsibility of TypeORM is to make your database tables in sync with your entities
-            There are two ways that help you to achieve this:
+            TypeORM has experimental support of WebSQL.
         </p>
 
-        <ul>
-            <li>
-                <p>Use <code>autoSchemaSync: true</code> in your connection options:</p>
-                <pre><code class="language-typescript">
-import {createConnection} from "typeorm";
 
-createConnection({
-    /* ... other options */
-    autoSchemaSync: true
-});
-        </code></pre>
-                This option makes your database to be in sync with entities each time you run this code.
-                This option is perfect during development, but in production you may not want this option to be enabled.
+        <h3>Installation</h3>
+
+        <ol>
+            <li>
+                <p>
+                    Install module:
+                </p>
+                <code>npm install typeorm-browser --save</code>
             </li>
             <li>
-                <p>Use command line tools and run schema sync manually in the command line:</p>
-                <code>typeorm schema:sync</code>
-                <p>This command will execute schema synchronization. Note, that to make command line tools to work,
-                you must create a [ormconfig.json] file.</p>
+                <p>
+                    Install <b>reflect-metadata</b> shim:
+                </p>
+                <code>npm install reflect-metadata --save</code>
+                <p>
+                    and include it in your app:
+                </p>
+                <p>
+                    <code>&lt;script src="./node_modules/reflect-metadata/Reflect.js"&gt;&lt;/script&gt;</code>
+                </p>
+                <p>
+                    in your app's entry point (for example <b>index.html</b>).
+                </p>
             </li>
-        </ul>
+        </ol>
+
+        <h3>How to setup system.js config</h3>
+        <p>
+            TypeORM in browser works with system.js. Here is example how your <b>index.html</b> and systemjs config should look like:
+        </p>
+        <pre><code class="language-html">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;title&gt;using TypeORM in the browser&lt;/title&gt;
+
+    &lt;script src="./node_modules/reflect-metadata/Reflect.js"&gt;&lt;/script&gt;
+    &lt;script src="./node_modules/systemjs/dist/system.src.js"&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        System.config({
+            defaultJSExtensions: true,
+            map: {
+                "typeorm": "node_modules/typeorm-browser/typeorm-browser.min.js"
+            },
+            packages: {
+                "typeorm": {
+                    format: "register"
+                }
+            }
+        });
+    &lt;/script&gt;
+    &lt;script&gt;System.import("./src/index").catch(function(err){ console.error(err); });&lt;/script&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        <h3>How to configure connection</h3>
+
+        <p>Here is how you need to configure your connection:</p>
+
+        <pre><code class="language-typescript">
+createConnection({
+    driver: {
+        type: "websql",
+        database: "test",
+        extra: {
+            version: 1,
+            description: "test database",
+            size: 2 * 1024 * 1024
+        }
+    },
+    entities: [
+        Photo
+    ],
+    autoSchemaSync: true
+})
+</code></pre>
+
+        <h3>Example</h3>
 
         <p>
-            Schema sync is extremely fast. We have checked it with > 300 tables,
-            in take only few seconds to sync a schema. So, if you are considering to disable <code>autoSchemaSync</code>
-            option during development because of performance issues, first check how fast or slow is it.
+            Take a look on <a href="https://github.com/typeorm/browser-example">this</a> example to learn more about
+            how TypeORM works in the browser.
         </p>
 
         <a href="https://github.com/typeorm/typeorm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>

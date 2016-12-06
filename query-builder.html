@@ -42,7 +42,7 @@
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>
             <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
-            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li><li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
         </ul>
 
     </header>
@@ -103,7 +103,7 @@ export class Post {
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -114,7 +114,7 @@ const posts = await connection
 const post = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .getSingleResult();
+            .getOne();
         </code></pre>
 
         <p>
@@ -126,7 +126,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .orderBy("post.title", "ASC")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -138,7 +138,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .where("post.title LIKE :keyword", { keyword: "%hello%" })
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -152,7 +152,7 @@ const posts = await connection
             .where("post.title LIKE :keyword")
             .andWhere("post.text LIKE :keyword")
             .setParameter("keyword", "%hello%")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -164,7 +164,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .having("post.title LIKE :keyword", { keyword: "%hello%" })
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -178,7 +178,7 @@ const posts = await connection
             .having("post.title LIKE :keyword")
             .orHaving("post.text LIKE :keyword")
             .setParameter("keyword", "%hello%")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -190,7 +190,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .groupBy("post.title")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -203,7 +203,7 @@ const posts = await connection
             .createQueryBuilder("post")
             .offset(5)
             .limit(10)
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -216,7 +216,7 @@ const posts = await connection
             .createQueryBuilder("post")
             .setFirstResult(5)
             .setMaxResults(10)
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -228,7 +228,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .leftJoinAndSelect("post.categories", "categories") // second parameter is an alias for joined data
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -240,7 +240,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .innerJoinAndSelect("post.categories", "categories") // second parameter is an alias for joined data
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -252,7 +252,7 @@ const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
             .innerJoin("post.categories", "categories")
-            .getResults();
+            .getMany();
         </code></pre>
 
         <p>
@@ -263,8 +263,8 @@ const posts = await connection
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .innerJoinAndSelect("post.categories", "category", "ON", "category.name=:myCategory", { myCategory: "world" })
-            .getResults();
+            .innerJoinAndSelect("post.categories", "category", "category.name=:myCategory", { myCategory: "world" })
+            .getMany();
         </code></pre>
 
         <p>
@@ -275,8 +275,8 @@ const posts = await connection
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .innerJoinAndMapMany("post.activeCategories", "post.categories", "category", "ON", "category.isActive=:isActive", { isActive: true })
-            .getResults();
+            .innerJoinAndMapMany("post.activeCategories", "post.categories", "category", "category.isActive=:isActive", { isActive: true })
+            .getMany();
         </code></pre>
 
         <p>
@@ -287,8 +287,8 @@ const posts = await connection
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .innerJoinAndMapOne("post.myCategory", "post.categories", "category", "ON", "category.currentUser=:currentUser", { currentUser: currentUser.id })
-            .getResults();
+            .innerJoinAndMapOne("post.myCategory", "post.categories", "category", "category.currentUser=:currentUser", { currentUser: currentUser.id })
+            .getMany();
         </code></pre>
 
         <p>
@@ -299,8 +299,8 @@ const posts = await connection
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .leftJoinAndSelect(Image, "image", "ON", "image.post=:post.id")
-            .getResults();
+            .leftJoinAndSelect(Image, "image", "image.post=:post.id")
+            .getMany();
         </code></pre>
 
         <p>
@@ -311,8 +311,8 @@ const posts = await connection
 const posts = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .leftJoinAndSelect("my_images", "image", "ON", "image.post=:post.id")
-            .getResults();
+            .leftJoinAndSelect("my_images", "image", "image.post=:post.id")
+            .getMany();
         </code></pre>
 
         <p>
@@ -334,7 +334,7 @@ const postsCount = await connection
 const [posts, count] = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .getResultsAndCount();
+            .getManyAndCount();
         </code></pre>
 
         <p>
@@ -345,7 +345,7 @@ const [posts, count] = await connection
 const scalarResults = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .getScalarResults();
+            .getScalarMany();
         </code></pre>
 
         <p>
@@ -356,7 +356,7 @@ const scalarResults = await connection
 const scalarResult = await connection
             .getRepository(Post)
             .createQueryBuilder("post")
-            .getSingleScalarResult();
+            .getScalarOne();
         </code></pre>
 
         <p>
@@ -415,8 +415,6 @@ const posts = await connection
             <li id="api.queryBuilder.delete">
                 <a class="anchor" href="#api.queryBuilder.delete"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
                 <code class="language-typescript">delete(): QueryBuilder</code><br/>
-                <code class="language-typescript">delete(entityTarget: Function|string): QueryBuilder</code><br/>
-                <code class="language-typescript">delete(tableName: string): QueryBuilder</code><br/>
                 <p>
                     Creates DELETE query.
                 </p>
@@ -461,9 +459,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.innerJoin">
                 <a class="anchor" href="#api.queryBuilder.innerJoin"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">innerJoin(property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoin(entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoin(tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoin(property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoin(entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoin(tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     INNER JOINs (without selection).
                     You also need to specify an alias of the joined data.
@@ -472,9 +470,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.leftJoin">
                 <a class="anchor" href="#api.queryBuilder.leftJoin"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">leftJoin(property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoin(entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoin(tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoin(property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoin(entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoin(tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     LEFT JOINs (without selection).
                     You also need to specify an alias of the joined data.
@@ -483,9 +481,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.innerJoinAndSelect">
                 <a class="anchor" href="#api.queryBuilder.innerJoinAndSelect"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">innerJoinAndSelect(property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndSelect(entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndSelect(tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndSelect(property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndSelect(entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndSelect(tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     INNER JOINs and adds all selection properties to SELECT.
                     You also need to specify an alias of the joined data.
@@ -494,9 +492,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.leftJoinAndSelect">
                 <a class="anchor" href="#api.queryBuilder.leftJoinAndSelect"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">leftJoinAndSelect(property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndSelect(entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndSelect(tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndSelect(property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndSelect(entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndSelect(tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     LEFT JOINs and adds all selection properties to SELECT.
                     You also need to specify an alias of the joined data.
@@ -505,9 +503,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.innerJoinAndMapMany">
                 <a class="anchor" href="#api.queryBuilder.innerJoinAndMapMany"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapMany(mapToProperty: string, tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     INNER JOINs, SELECTs the data returned by a join and MAPs all that data to some entity's property.
                     This is extremely useful when you want to select some data and map it to some virtual property.
@@ -518,9 +516,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.innerJoinAndMapOne">
                 <a class="anchor" href="#api.queryBuilder.innerJoinAndMapOne"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">innerJoinAndMapOne(mapToProperty: string, tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     INNER JOINs, SELECTs the data returned by a join and MAPs all that data to some entity's property.
                     This is extremely useful when you want to select some data and map it to some virtual property.
@@ -531,9 +529,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.leftJoinAndMapMany">
                 <a class="anchor" href="#api.queryBuilder.leftJoinAndMapMany"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapMany(mapToProperty: string, tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     LEFT JOINs, SELECTs the data returned by a join and MAPs all that data to some entity's property.
                     This is extremely useful when you want to select some data and map it to some virtual property.
@@ -544,9 +542,9 @@ const posts = await connection
             </li>
             <li id="api.queryBuilder.leftJoinAndMapOne">
                 <a class="anchor" href="#api.queryBuilder.leftJoinAndMapOne"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, property: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, entity: Function|string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
-                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, tableName: string, alias: string, conditionType?: "ON"|"WITH", condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, property: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, entity: Function|string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
+                <code class="language-typescript">leftJoinAndMapOne(mapToProperty: string, tableName: string, alias: string, condition?: string, parameters?: ObjectLiteral): QueryBuilder</code><br/>
                 <p>
                     LEFT JOINs, SELECTs the data returned by a join and MAPs all that data to some entity's property.
                     This is extremely useful when you want to select some data and map it to some virtual property.
@@ -684,16 +682,8 @@ const posts = await connection
                 <a class="anchor" href="#api.queryBuilder.setParameters"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
                 <code class="language-typescript">setParameters(parameters: ObjectLiteral): QueryBuilder</code>
                 <p>
-                    Sets given object literal as parameters.
-                    Note, that it clears all previously set parameters.
-                </p>
-            </li>
-            <li id="api.queryBuilder.addParameters">
-                <a class="anchor" href="#api.queryBuilder.addParameters"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">addParameters(parameters: ObjectLiteral): QueryBuilder</code>
-                <p>
                     Adds all parameters from the given object.
-                    Unlike setParameters method it does not clear all previously set parameters.
+                    It does not clear all previously set parameters.
                 </p>
             </li>
             <li id="api.queryBuilder.getParameters">
@@ -718,9 +708,9 @@ const posts = await connection
                     Executes sql generated by query builder and returns raw database results.
                 </p>
             </li>
-            <li id="api.queryBuilder.getResultsAndScalarResults">
-                <a class="anchor" href="#api.queryBuilder.getResultsAndScalarResults"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getResultsAndScalarResults(): Promise&lt;{ entities: Entity[], scalarResults: any[] }&gt;</code>
+            <li id="api.queryBuilder.getEntitiesAndScalarResults">
+                <a class="anchor" href="#api.queryBuilder.getEntitiesAndScalarResults"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getEntitiesAndScalarResults(): Promise&lt;{ entities: Entity[], scalarResults: any[] }&gt;</code>
                 <p>
                     Executes sql generated by query builder and returns object with scalar results and entities created from them.
                 </p>
@@ -733,37 +723,37 @@ const posts = await connection
                     Count excludes all limitations set by setFirstResult and setMaxResults methods call.
                 </p>
             </li>
-            <li id="api.queryBuilder.getScalarResults">
-                <a class="anchor" href="#api.queryBuilder.getScalarResults"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getScalarResults&lt;T&gt;(): Promise&lt;T[]&gt;</code>
+            <li id="api.queryBuilder.getScalarMany">
+                <a class="anchor" href="#api.queryBuilder.getScalarMany"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getScalarMany&lt;T&gt;(): Promise&lt;T[]&gt;</code>
                 <p>
                     Gets all scalar results returned by execution of generated query builder sql.
                 </p>
             </li>
-            <li id="api.queryBuilder.getSingleScalarResult">
-                <a class="anchor" href="#api.queryBuilder.getSingleScalarResult"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getSingleScalarResult&lt;T&gt;(): Promise&lt;T&gt;</code>
+            <li id="api.queryBuilder.getScalarOne">
+                <a class="anchor" href="#api.queryBuilder.getScalarOne"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getScalarOne&lt;T&gt;(): Promise&lt;T&gt;</code>
                 <p>
                     Gets first scalar result returned by execution of generated query builder sql.
                 </p>
             </li>
-            <li id="api.queryBuilder.getResultsAndCount">
-                <a class="anchor" href="#api.queryBuilder.getResultsAndCount"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getResultsAndCount(): Promise&lt;[Entity[], number]&gt;</code>
+            <li id="api.queryBuilder.getManyAndCount">
+                <a class="anchor" href="#api.queryBuilder.getManyAndCount"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getManyAndCount(): Promise&lt;[Entity[], number]&gt;</code>
                 <p>
                     Gets entities and count returned by execution of generated query builder sql.
                 </p>
             </li>
-            <li id="api.queryBuilder.getResults">
-                <a class="anchor" href="#api.queryBuilder.getResults"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getResults(): Promise&lt;Entity[]&gt;</code>
+            <li id="api.queryBuilder.getMany">
+                <a class="anchor" href="#api.queryBuilder.getMany"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getMany(): Promise&lt;Entity[]&gt;</code>
                 <p>
                     Gets entities returned by execution of generated query builder sql.
                 </p>
             </li>
-            <li id="api.queryBuilder.getSingleResult">
-                <a class="anchor" href="#api.queryBuilder.getSingleResult"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-                <code class="language-typescript">getSingleResult(): Promise&lt;Entity&gt;</code>
+            <li id="api.queryBuilder.getOne">
+                <a class="anchor" href="#api.queryBuilder.getOne"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+                <code class="language-typescript">getOne(): Promise&lt;Entity&gt;</code>
                 <p>
                     Gets single entity returned by execution of generated query builder sql.
                 </p>

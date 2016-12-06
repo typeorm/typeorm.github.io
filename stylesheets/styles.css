@@ -384,3 +384,15 @@ p.secondary-text {
   color: #358CCB;
 
 }
+
+.announcement {
+  background-color: #1d3e81;
+  color: #fff;
+}
+.announcement a{
+  color: #fff;
+  text-decoration: underline;
+}
+.announcement a:hover {
+  color: #ccc;
+}

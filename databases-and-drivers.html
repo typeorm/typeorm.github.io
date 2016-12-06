@@ -40,7 +40,7 @@
             <li><a href="entity-manager.html">Entity Manager</a><br/></li>
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   <li><a href="using-service-container.html">Using service container</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
-            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li><li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
         </ul>
 
     </header>
@@ -76,6 +76,7 @@
             <li>SQLite</li>
             <li>Microsoft SQL Server</li>
             <li>Oracle</li>
+            <li>WebSQL</li>
         </ul>
 
         <h3 id="driver-package-installation">
@@ -99,7 +100,6 @@
                 <p><code>npm i mysql --save</code></p>
                 <p>You can also use <a href="https://github.com/sidorares/node-mysql2">mysql2</a> instead of mysql:</p>
                 <p><code>npm i mysql2 --save</code></p>
-                <p>But note that this require you to use "mysql2" driver type in the driver options.</p>
             </li>
             <li>
                 for <b>MariaDB</b> you need to install <a href="https://github.com/mysqljs/mysql">mysql</a>
@@ -140,7 +140,7 @@ export interface DriverOptions {
     /**
      * Database type. This value is required.
      */
-    readonly type: "mysql"|"mysql2"|"postgres"|"mariadb"|"sqlite"|"oracle"|"mssql";
+    readonly type: "mysql"|"postgres"|"mariadb"|"sqlite"|"oracle"|"mssql"|"websql";
 
     /**
      * Connection url to where perform connection to.
