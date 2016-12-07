@@ -54,7 +54,8 @@
         <p>
             TypeORM is an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>
             (ORM) for node.js written in
-            TypeScript that can be used with TypeScript or JavaScript (ES5, ES6, ES7).
+            
+            that can be used with TypeScript or JavaScript (ES5, ES6, ES7).
             Its goal to always support latest JavaScript features and provide features
             that help you to develop any kind of applications that use database - from
             small applications with a few tables to large scale enterprise applications.
@@ -151,7 +152,11 @@
 "emitDecoratorMetadata": true,
 "experimentalDecorators": true,
         </code></pre>
-
+        
+        <p>
+            You'll also need to enable <b>es6</b> in the <b>lib</b> section of compiler options, or install <b>es6-shim</b> from <b>@typings</b>.
+        </p>
+        
         <h4>Node.js version</h4>
 
         <p>
