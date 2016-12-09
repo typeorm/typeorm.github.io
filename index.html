@@ -63,7 +63,7 @@
 
         <p>TypeORM helps you to:</p>
         <ul>
-            <li>automatically create in the database table schemas based on your models</li>
+            <li>automatically create the database table schemes based on your models</li>
             <li>ability to transparently insert / update / delete to the database your objects</li>
             <li>map your selections from tables to javascript objects and map table columns
                 to javascript object's properties</li>
@@ -78,8 +78,8 @@
         </p>
 
         <p>
-        The benefit of using ORM for the programmer is the ability to focus on
-        the business logic and don't worry about persistence so much.
+        The benefit of using ORM for the programmer is ability to focus on
+        the business logic and not worrying about persistence so much.
         </p>
 
         <p>
@@ -133,12 +133,12 @@
                         <p>for <b>Oracle</b> (experimental)</p>
                         <code>npm install oracledb --save</code>
                         <p>
-                            To make oracle driver to work you need to follow installation instructions from
+                            To make oracle driver work you need to follow installation instructions from
                             <a href="https://github.com/oracle/node-oracledb">their</a> site.
                         </p>
                     </li>
                 </ul>
-                <p>Install only one of them, depend on which database you use.</p>
+                <p>Install only one of them, depending on which database you use.</p>
             </li>
         </ol>
 
@@ -200,7 +200,7 @@ export class Photo {
             Creating entity
         </h4>
         <p>
-            Now lets make it entity:
+            Now let's make it entity:
         </p>
 
         <pre><code class="language-typescript">
@@ -223,8 +223,8 @@ export class Photo {
         </h4>
 
         <p>
-            Now we have a table, and each table consist of columns. Let's add some columns.
-            You can make any property of your model a column by using a <code>@Column</code> decorator:
+            Now we have a table, and each table consists of columns. Let's add some columns.
+            You can make any property of your model a column by using  <code>@Column</code> decorator:
         </p>
 
         <pre><code class="language-typescript">
@@ -259,9 +259,9 @@ export class Photo {
         </h4>
 
         <p>
-            Perfect. Now ORM will generate us a photo table with all its properties as columns.
+            Perfect. Now ORM will generate us a photo table with all its' properties as columns.
             But there is one thing left. Each entity must have a primary column.
-            This is requirement and you can't avoid it. To make a column a primary you need to use <code>@PrimaryColumn</code>
+            This is a requirement and you can't avoid it. To make a column primary you need to use <code>@PrimaryColumn</code>
             decorator.
         </p>
 
@@ -297,7 +297,7 @@ export class Photo {
         </h4>
 
         <p>
-            Now, lets say you want to make your id column to be auto-generated
+            Now, let's say you want to make your id column to be auto-generated
             (this is known as auto-increment / sequence / generated identity column).
             To do that you need to change your column's type to <code>integer</code> and set a
             <code>{ generated: true }</code> in your primary column's options:
@@ -373,11 +373,11 @@ export class Photo {
         </h4>
 
         <p>
-            Next step, lets fix our data types.
+            Next step, let's fix our data types.
             By default, string is mapped to a varchar(255)-like type (depend of database type).
             Number is mapped to a float/double-like type (depend of database type).
             We don't want all our columns to be limited varchars or excessive floats.
-            Lets setup correct data types:
+            Let's setup correct data types:
         </p>
 
         <pre><code class="language-typescript">
@@ -414,7 +414,7 @@ export class Photo {
         </h4>
 
         <p>
-            Now, when our entity is created, lets create <code>app.ts</code> file and setup our connection there:
+            Now, when our entity is created, let's create <code>app.ts</code> file and setup our connection there:
         </p>
 
         <pre><code class="language-typescript">
@@ -464,7 +464,7 @@ createConnection({
 
         <p>
             Later, when we create more entities we need to add them to the <code>entities</code> in our configuration.
-            But this is not very convenient, and instead we can setup the whole directory, where from all entities
+            But this is not very convenient, and instead we can setup the whole directory, all entities from there
             will be connected and used in our connection:
         </p>
 
@@ -523,7 +523,7 @@ createConnection({
         </h4>
 
         <p>
-            Now lets create a new photo to save it in the database:
+            Now let's create a new photo to save it in the database:
         </p>
 
         <pre><code class="language-typescript">
@@ -584,7 +584,7 @@ createConnection(/*...*/).then(async connection => {
             We just created a new photo and saved it in the database.
             We used <code>EntityManager</code> to save it.
             Using entity managers you can manipulate any entity in your app.
-            Now lets load our saved entity:
+            Now let's load our saved entity:
         </p>
 
         <pre><code class="language-typescript">
@@ -610,7 +610,7 @@ createConnection(/*...*/).then(async connection => {
         </h4>
 
         <p>
-            Now lets refactor our code and use <code>Repository</code> instead of <code>EntityManager</code>.
+            Now let's refactor our code and use <code>Repository</code> instead of <code>EntityManager</code>.
             Each entity has its own repository which handles all operations with its entity.
             When you deal with entities a lot, Repositories are more convenient to use then EntityManager:
         </p>
@@ -738,7 +738,7 @@ createConnection(/*...*/).then(async connection => {
         <p>
             Lets create a one-to-one relation with another class.
             Lets create a new class called <code>PhotoMetadata.ts</code> which will contain a <code>PhotoMetadata</code>
-            class which supposed to contain our photo's additional meta-information:
+            class which is supposed to contain our photo's additional meta-information:
         </p>
 
         <pre><code class="language-typescript">
@@ -773,7 +773,7 @@ export class PhotoMetadata {
         </code></pre>
 
         <p>
-            Here, we are used a new decorator called <code>@OneToOne</code>.
+            Here we used a new decorator called <code>@OneToOne</code>.
             It allows to create one-to-one relations between two entities.
             <code>type => Photo</code> is a function that returns the class of the entity with which we want to make our relation.
             We are forced to use a function that returns a class, instead of using class directly, because of the language specifics.
@@ -782,10 +782,10 @@ export class PhotoMetadata {
         </p>
 
         <p>
-            We also put <code>@JoinColumn</code> decorator, which indicates that this side of the relationship will be owning relationship.
-            Relations can be a uni-directional and bi-directional.
-            Only one side of relational can be owner.
-            Using this decorator is required on owner side of the relationship.
+            We also put <code>@JoinColumn</code> decorator, which indicates that this side of the relationship will be the owning side.
+            Relations can be uni-directional and bi-directional.
+            Only one side of relation can be an owner.
+            Using this decorator is required in owner side of the relationship.
         </p>
 
         <p>
@@ -861,10 +861,10 @@ createConnection(/*...*/).then(async connection => {
         </h4>
 
         <p>
-            Relations can be a uni-directional and bi-directional.
+            Relations can be uni-directional and bi-directional.
             Now, relation between <b>PhotoMetadata</b> and <b>Photo</b> is uni-directional.
             Owner of the relation is <b>PhotoMetadata</b> and <b>Photo</b> doesn't know anything
-            about <b>PhotoMetadata</b>. This makes complicated accessing a photo metadata from the photo objects.
+            about <b>PhotoMetadata</b>. This makes complicated accessing a photo metadata from a photo object.
             To fix it we should add inverse relation and make relations between <b>PhotoMetadata</b> and <b>Photo</b> bi-directional.
             Let's modify our entities:
         </p>
@@ -907,8 +907,8 @@ export class Photo {
 
         <p>
             Note that we should use <code>@JoinColumn</code> only on one side of relation.
-            On which side you put this decorator, that side will be owning side of relationship.
-            Owning side of relationship contain a column with a foreign key in the database.
+            The side you put this decorator on, will be the owning side of relationship.
+            Owning side of relationship contains a column with a foreign key in the database.
         </p>
 
         <h4 id="example-one-to-one-load">
@@ -950,11 +950,11 @@ createConnection(/*...*/).then(async connection => {
         <p>
             <b>alias</b> is a required property of FindOptions.
             Its your own alias name of the data you are selecting.
-            You'll use this alias in your where, order by, group by, join and other expressions.
+            You'll use this alias in your "where", "order by", "group by", "join" and other expressions.
         </p>
 
         <p>
-            We also used <b>innerJoinAndSelect</b> to inner and join and select the data from photo.metadata.
+            We also used <b>innerJoinAndSelect</b> to inner and join and to select the data from photo.metadata.
             In <b>"photo.metadata"</b> "photo" is an alias you used, and "metadata" is a property name with relation
             of the object you are selecting. <b>"metadata":</b> is a new alias to the data returned by join expression.
         </p>
@@ -985,7 +985,7 @@ createConnection(/*...*/).then(async connection => {
             using cascade options to automatically save related objects
         </h4>
 
-        <p>We can setup cascade options in our relations, in the cases when we want
+        <p>We can setup cascade options in our relations, in case if we want
             our related object to be persisted whenever other object is saved. Let's
             change our photo's @OneToOne decorator a bit:</p>
 
