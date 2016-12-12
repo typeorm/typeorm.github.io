@@ -34,8 +34,6 @@
             <li><a href="databases-and-drivers.html">Databases and drivers</a><br/></li>
             <li><a href="updating-database-schema.html">Updating database schema</a><br/></li>
             <li><a href="tables-and-columns.html">Tables and columns</a><br/></li>
-
-
             <li><a href="relations.html">Relations</a><br/></li>
             <li><a href="indices.html">Indices</a><br/></li>
             <li><a href="repository.html">Repository</a><br/></li>
@@ -43,37 +41,126 @@
             <li><a href="entity-manager.html">Entity Manager</a><br/></li>
             <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   <li><a href="using-service-container.html">Using service container</a><br/></li><li><a href="migrations.html">Migrations</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
-            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li><li><a href="usage-in-browser.html">Usage in the browser</a><br/></li><li><a href="usage-with-javascript.html">Using with JavaScript</a><br/></li>
+            <li><a href="decorators-reference.html">Decorators Reference</a><br/></li>
+            <li><a href="usage-in-browser.html">Usage in the browser</a><br/></li>
+            <li><a href="usage-with-javascript.html">Using with JavaScript</a><br/></li>
         </ul>
 
     </header>
     <section>
 
-        <h2>
-            Using service container
-        </h2>
+        <h2>Using with JavaScript</h2>
 
         <p>
-            In TypeORM you can use service container.
-            Service container allows to inject custom services in some places,
-            like in subscribers or custom naming strategies.
-            Or for example, you can get access to <code>ConnectionManager</code> from any place using service container.
+            TypeORM can be used not only with TypeScript, but also with JavaScript.
+            Everything is the same, except you need to omit types and if your platform does not support
+            ES6 classes then you need to define an objects with all required metadata.
         </p>
 
+        <h4>app.js</h4>
+
+        <pre><code class="language-javascript">
+var typeorm = require("typeorm");
+
+typeorm.createConnection({
+    driver: {
+        type: "postgres",
+        host: "localhost",
+        port: 5432,
+        username: "test",
+        password: "admin",
+        database: "test"
+    },
+    entitySchemas: [
+        require("./entity/Post"),
+        require("./entity/Category")
+    ],
+    autoSchemaSync: true
+}).then(function (connection) {
+
+    var category1 = {
+        name: "TypeScript"
+    };
+    var category2 = {
+        name: "Programming"
+    };
+
+    var post = {
+        title: "Control flow based type analysis",
+        text: "TypeScript 2.0 implements a control flow-based type analysis for local variables and parameters.",
+        categories: [
+            category1, category2
+        ]
+    };
+
+    var postRepository = connection.getRepository("Post");
+    postRepository.persist(post)
+        .then(function(savedPost) {
+            console.log("Post has been saved: ", savedPost);
+            console.log("Now lets load all posts: ");
+
+            return postRepository.find();
+        })
+        .then(function(allPosts) {
+            console.log("All posts: ", allPosts);
+        });
+
+
+}).catch(function(error) {
+    console.log("Error: ", error);
+});
+</code></pre>
+
+        <h4>entity/Category.js</h4>
+
+        <pre><code class="language-javascript">
+module.exports = {
+    name: "Category",
+    columns: {
+        id: {
+            primary: true,
+            type: "int",
+            generated: true
+        },
+        name: {
+            type: "string"
+        }
+    }
+};
+</code></pre>
+
+        <h4>entity/Post.js</h4>
+
+        <pre><code class="language-javascript">
+module.exports = {
+    name: "Post",
+    columns: {
+        id: {
+            primary: true,
+            type: "int",
+            generated: true
+        },
+        title: {
+            type: "string"
+        },
+        text: {
+            type: "text"
+        }
+    },
+    relations: {
+        categories: {
+            target: "Category",
+            type: "many-to-many",
+            joinTable: true,
+            cascadeInsert: true
+        }
+    }
+};
+</code></pre>
         <p>
-            Here is example how you can setup <a href="https://github.com/pleerock/typedi">typedi</a> service container with TypeORM.
-            But note, that you can setup any service container with TypeORM.
+            Learn more about how to use TypeORM with JavaScript from
+            <a href="https://github.com/typeorm/javascript-example">this repository</a>.
         </p>
-
-        <pre><code class="language-typescript">
-import {createConnection, ConnectionOptions} from "typeorm";
-import {Container} from "typedi";
-
-// its important to setup container before you start to work with TypeORM
-useContainer(Container);
-createConnection({/* ... */);
-        </code></pre>
-
 
         <a href="https://github.com/typeorm/typeorm"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
