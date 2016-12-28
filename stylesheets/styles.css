@@ -188,6 +188,10 @@ header {
   width:270px;
   float:left;
   position:fixed;
+  top:0;
+  bottom:0;
+  overflow-y:auto;
+  overflow-x:hidden;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -231,10 +235,9 @@ hr {
 
 footer {
   width:270px;
-  float:left;
-  position:fixed;
-  bottom:50px;
   -webkit-font-smoothing:subpixel-antialiased;
+  clear:both;
+  padding-left:350px;
 }
 
 footer p {
