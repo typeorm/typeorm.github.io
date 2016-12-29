@@ -57,33 +57,27 @@
         <!--<pre class="announcement">0.0.5 is released! Most notable changes are in the <a href="https://github.com/typeorm/typeorm/blob/master/CHANGELOG.md">changelog</a>.</pre>-->
         <p>
             TypeORM is an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">Object Relational Mapper</a>
-            (ORM) for node.js written in
-            
-            that can be used with TypeScript or JavaScript (ES5, ES6, ES7).
-            Its goal to always support latest JavaScript features and provide features
-            that help you to develop any kind of applications that use database - from
-            small applications with a few tables to large scale enterprise applications.
+            (ORM) for node.js that can be used with TypeScript or JavaScript (ES5, ES6, ES7).
+            Its goal is to always support the latest JavaScript features and provide features
+            that help you to develop any kind of applications that use a database - from
+            small applications with a few tables, to large scale enterprise applications.
         </p>
 
         <p>TypeORM helps you to:</p>
         <ul>
             <li>automatically create the database table schemes based on your models</li>
-            <li>ability to transparently insert / update / delete to the database your objects</li>
+            <li>transparently insert / update / delete to the database your objects</li>
             <li>map your selections from tables to javascript objects and map table columns
-                to javascript object's properties</li>
+                to object properties</li>
             <li>easily create one-to-one, many-to-one, one-to-many and many-to-many relations between tables</li>
             <li>and much more...</li>
         </ul>
 
         <p>
-            TypeORM uses <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern">data mapper pattern</a>,
+            TypeORM uses the <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern">data mapper pattern</a>,
             unlike all other javascript ORMs that currently exist, which means you can write loosely coupled, scalable,
-            maintainable applications with less problems.
-        </p>
-
-        <p>
-        The benefit of using ORM for the programmer is ability to focus on
-        the business logic and not worrying about persistence so much.
+            maintainable applications. The benefit of using an ORM is ability to focus on the business logic (your application)
+            and less on the persistence layer (your database).
         </p>
 
         <p>
@@ -102,9 +96,9 @@
                 <code>npm install typeorm --save</code>
             </li>
             <li>
-                <p>You also need to install <a href="https://github.com/rbuckton/ReflectDecorators">reflect-metadata</a> shim:</p>
+                <p>You will also need to install the <a href="https://github.com/rbuckton/ReflectDecorators">reflect-metadata</a> decorator shim:</p>
                 <code>npm install reflect-metadata --save</code>
-                <p>and use it somewhere in the global place of your app (for example in <i>app.ts</i>):</p>
+                <p>and use it somewhere in the 'entry point' of your app (for example in <i>app.ts</i>):</p>
                 <code>import "reflect-metadata";</code>
             </li>
             <!--<li>
@@ -115,7 +109,7 @@
                 <code>import "es6-shim";</code>
             </li>-->
             <li>
-                <p>Install database driver:</p>
+                <p>Install a database driver, depending on which one you use:</p>
                 <ul>
                     <li>
                         <p>for <b>MySQL</b> or <b>MariaDB</b></p>
@@ -137,30 +131,31 @@
                         <p>for <b>Oracle</b> (experimental)</p>
                         <code>npm install oracledb --save</code>
                         <p>
-                            To make oracle driver work you need to follow installation instructions from
+                            To make the Oracle driver work you need to follow the installation instructions from
                             <a href="https://github.com/oracle/node-oracledb">their</a> site.
                         </p>
                     </li>
                 </ul>
-                <p>Install only one of them, depending on which database you use.</p>
             </li>
         </ol>
 
         <h4>TypeScript configuration</h4>
 
         <p>
-            Also make sure you are using TypeScript compiler version > <b>2.1</b> and you have enabled following settings in <b>tsconfig.json</b>:
+            Also make sure you are using TypeScript compiler version ><b>2.1</b> and you have enabled the following
+            settings in <b>tsconfig.json</b>:
         </p>
 
         <pre><code class="language-javascript">
 "emitDecoratorMetadata": true,
 "experimentalDecorators": true,
         </code></pre>
-        
+
         <p>
-            You'll also need to enable <b>es6</b> in the <b>lib</b> section of compiler options, or install <b>es6-shim</b> from <b>@typings</b>.
+            You'll also need to enable <b>es6</b> in the <b>lib</b> section of your compiler options,
+            or install <b>es6-shim</b> from <b>@typings</b>.
         </p>
-        
+
         <h4>Node.js version</h4>
 
         <p>
@@ -174,7 +169,7 @@
             TypeORM works in the browser and has experimental support of WebSQL.
             If you want to use TypeORM in the browser then you need to do <code>npm i typeorm-browser</code>.
             More information about it in <a href="./usage-in-browser.html">this page</a>.
-            Also take a look on <a href="https://github.com/typeorm/browser-example">this sample</a>.
+            Also take a look at <a href="https://github.com/typeorm/browser-example">this sample</a>.
         </p>
 
         <h3 id="quick-start">
@@ -184,10 +179,11 @@
 
         <p>
             In TypeORM tables are created from Entities.
-            <i>Entity</i> is your model decorated by a <code>@Table</code> decorator.
+            An <i>Entity</i> is your model decorated by a <code>@Table</code> decorator.
             You can get entities from the database and insert/update/remove them from there.
-            Let's say we have a model <code>entity/Photo.ts</code>:
         </p>
+
+        <p>Let's say we have a model <code>entity/Photo.ts</code> :</p>
 
         <pre><code class="language-typescript">
 export class Photo {
@@ -204,7 +200,7 @@ export class Photo {
             Creating entity
         </h4>
         <p>
-            Now let's make it entity:
+            Now let's make it an entity:
         </p>
 
         <pre><code class="language-typescript">
@@ -228,7 +224,7 @@ export class Photo {
 
         <p>
             Now we have a table, and each table consists of columns. Let's add some columns.
-            You can make any property of your model a column by using  <code>@Column</code> decorator:
+            You can make any property of your model a column by using a <code>@Column</code> decorator:
         </p>
 
         <pre><code class="language-typescript">
@@ -263,10 +259,9 @@ export class Photo {
         </h4>
 
         <p>
-            Perfect. Now ORM will generate us a photo table with all its' properties as columns.
-            But there is one thing left. Each entity must have a primary column.
-            This is a requirement and you can't avoid it. To make a column primary you need to use <code>@PrimaryColumn</code>
-            decorator.
+            Perfect. Now the ORM will generate us a photo table with all its properties as columns.
+            But, each entity must have a primary column. This is a requirement and it can't be avoided.
+            To make a primary column you must use a <code>@PrimaryColumn</code> decorator.
         </p>
 
         <pre><code class="language-typescript">
@@ -301,8 +296,8 @@ export class Photo {
         </h4>
 
         <p>
-            Now, let's say you want to make your id column to be auto-generated
-            (this is known as auto-increment / sequence / generated identity column).
+            Now, let's say you want your id column to be auto-generated
+            (this is known as an auto-increment / sequence / generated identity column).
             To do that you need to change your column's type to <code>integer</code> and set a
             <code>{ generated: true }</code> in your primary column's options:
         </p>
@@ -1303,7 +1298,7 @@ let photos = await photoRepository
             <li><a href="repository.html">Repository</a><br/></li>
             <li><a href="query-builder.html">Query Builder</a><br/></li>
             <li><a href="entity-manager.html">Entity Manager</a><br/></li>
-            <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>   
+            <li><a href="subscribers-and-entity-listeners.html">Subscribers and entity listeners</a><br/></li>
             <li><a href="using-service-container.html">Using service container</a><br/></li><li>
             <a href="migrations.html">Migrations</a><br/></li>
             <!-- <li><a href="naming-strategies.html">Naming Strategies</a><br/></li> -->
