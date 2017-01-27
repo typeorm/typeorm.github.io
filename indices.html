@@ -55,9 +55,9 @@
             Using <code>@Index</code> decorator on class allows to create index with multiple fields.
         </p>
         <pre><code class="language-typescript">
-import {Table, Index, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, Index, PrimaryGeneratedColumn, Column} from "typeorm";
 
-@Table()
+@Entity()
 @Index("my_index_with_id_and_text", ["id", "text"]) // first style
 @Index("my_index_with_id_and_title", (post: Post) => [post.id, post.title]) // alternative, type-safe style
 export class Post {
@@ -90,9 +90,9 @@ export class Post {
             Also you can set the index to be unique using special index option. Here is an example:
         </p>
         <pre><code class="language-typescript">
-import {Table, Index, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, Index, PrimaryGeneratedColumn, Column} from "typeorm";
 
-@Table()
+@Entity()
 @Index("my_index_with_id_and_text", ["id", "text"], { unique: true }) // first style
 @Index("my_index_with_id_and_title", (post: Post) => [post.id, post.title], { unique: true }) // alternative, type-safe style
 export class Post {

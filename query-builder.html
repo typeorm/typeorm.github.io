@@ -70,9 +70,9 @@
         </p>
 
         <pre><code class="language-typescript">
-import {Table, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
 
-@Table()
+@Entity()
 export class Post {
 
     @PrimaryGeneratedColumn()

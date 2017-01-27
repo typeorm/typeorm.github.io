@@ -56,8 +56,8 @@
         </p>
 
         <ul>
-            <li><a href="#table-decorators">Table decorators</a></li>
-            <li><a href="#table-options">Table options</a></li>
+            <li><a href="#entity-decorators">Table decorators</a></li>
+            <li><a href="#entity-options">Table options</a></li>
             <li><a href="#column-decorators">Column decorators</a></li>
             <li><a href="#column-options">Column options</a></li>
             <li><a href="#column-types">Column types</a></li>
@@ -66,8 +66,8 @@
             <li><a href="#table-inheritance">Table inheritance</a></li>
         </ul>
 
-        <h3 id="table-decorators">
-            <a class="anchor" href="#table-decorators"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+        <h3 id="entity-decorators">
+            <a class="anchor" href="#entity-decorators"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
             Table decorators
         </h3>
 
@@ -77,14 +77,14 @@
 
         <ul>
             <li>
-                <code>@Table</code>
+                <code>@Entity</code>
                 <p>
-                    All regular entities must be marked with @Table decorator.
+                    All regular entities must be marked with @Entity decorator.
                     Its a commonly used decorator.
                 </p>
             </li>
             <li>
-                <code>@AbstractTable</code>
+                <code>@AbstractEntity</code>
                 <p>
                     Abstract table is a table that contains columns and relations for all tables that will inherit this table.
                     Database table for the abstract table is not created.
@@ -92,28 +92,28 @@
                 </p>
             </li>
             <li>
-                <code>@ClassTableChild</code>
+                <code>@ClassEntityChild</code>
                 <p>
                     Special type of the table used in the class-table inherited tables.
                     Learn more about class table child in <a href="table-inheritance.html">table inheritance</a> section.
                 </p>
             </li>
             <li>
-                <code>@SingleTableChild</code>
+                <code>@SingleEntityChild</code>
                 <p>
                     Special type of the table used in the single-table inherited tables.
                     Learn more about single table child in <a href="table-inheritance.html">table inheritance</a> section.
                 </p>
             </li>
             <li>
-                <code>@ClosureTable</code>
+                <code>@ClosureEntity</code>
                 <p>
                     Used on a tables that stores its children in a tree using closure deisgn pattern.
                     Learn more about single table child in <a href="tree-tables.html">tree-tables</a> section.
                 </p>
             </li>
             <li>
-                <code>@EmbeddableTable</code>
+                <code>@EmbeddableEntity</code>
                 <p>
                     Embedded tables are separated classes which does not have thier own tables. Instead, all
                     their columns are merged into tables of entities which use them in their properties
@@ -122,13 +122,13 @@
             </li>
         </ul>
 
-        <h3 id="table-options">
-            <a class="anchor" href="#table-options"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-            Table options
+        <h3 id="entity-options">
+            <a class="anchor" href="#entity-options"><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
+            Entity options
         </h3>
 
         <pre><code class="language-typescript">
-export interface TableOptions {
+export interface EntityOptions {
 
     /**
      * Specifies a default order by used for queries from this table when no explicit order by is specified.
@@ -355,13 +355,13 @@ export interface ColumnOptions {
             but you don't want to create separate tables in your app for them.
             You only want to create a single table and storage all from both objects in a single table.
             To achieve that mark your secondary entity, that should be merged into primary entity with
-            <code>@EmbeddableTable</code> decorator:
+            <code>@EmbeddableEntity</code> decorator:
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
+import {Entity, Column} from "typeorm";
 
-@EmbeddableTable()
+@EmbeddableEntity()
 export class PhotoMetadata {
 
     @Column("int")
@@ -387,10 +387,10 @@ export class PhotoMetadata {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
 import {PhotoMetadata} from "./PhotoMetadata";
 
-@Table()
+@Entity()
 export class Photo {
 
     @PrimaryGeneratedColumn()
@@ -438,9 +438,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
 
-@Table()
+@Entity()
 export class Category {
 
     @PrimaryGeneratedColumn()
@@ -474,9 +474,9 @@ export class Category {
         </p>
 
         <pre><code class="language-typescript">
-import {ClosureTable, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {ClosureEntity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
 
-@ClosureTable()
+@ClosureEntity()
 export class Category {
 
     @PrimaryGeneratedColumn()
@@ -530,14 +530,14 @@ export class Category {
         </h4>
 
         <p>
-            Concrete table inheritance is possible throw the child classes decorated with <code>@AbstractTable</code> decorator.
+            Concrete table inheritance is possible throw the child classes decorated with <code>@AbstractEntity</code> decorator.
             Example:
         </p>
 
         <pre><code class="language-typescript">
-import {AbstractTable, Column, PrimaryGeneratedColumn} from "typeorm";
+import {AbstractEntity, Column, PrimaryGeneratedColumn} from "typeorm";
 
-@AbstractTable()
+@AbstractEntity()
 export class BaseEntity {
 
     @PrimaryGeneratedColumn()
@@ -550,10 +550,10 @@ export class BaseEntity {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
+import {Entity, Column} from "typeorm";
 import {Person} from "./Person";
 
-@Table()
+@Entity()
 export class Employee extends Person {
 
     @Column()
@@ -563,10 +563,10 @@ export class Employee extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
+import {Entity, Column} from "typeorm";
 import {Person} from "./Person";
 
-@Table()
+@Entity()
 export class Student extends Person {
 
     @Column()
@@ -576,10 +576,10 @@ export class Student extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
+import {Entity, Column} from "typeorm";
 import {Person} from "./Person";
 
-@Table()
+@Entity()
 export class Homesitter extends Person {
 
     @Column()
@@ -599,10 +599,10 @@ export class Homesitter extends Person {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
 
-@Table()
-@TableInheritance("single-table")
+@Entity()
+@EntityInheritance("single-table")
 @DiscriminatorColumn({ name: "type", type: "string"})
 export class Person {
 
@@ -619,10 +619,10 @@ export class Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {SingleTableChild, Column} from "typeorm";
+import {SingleEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@SingleTableChild()
+@SingleEntityChild()
 export class Employee extends Person {
 
     @Column()
@@ -632,10 +632,10 @@ export class Employee extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {SingleTableChild, Column} from "typeorm";
+import {SingleEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@SingleTableChild()
+@SingleEntityChild()
 export class Student extends Person {
 
     @Column()
@@ -645,10 +645,10 @@ export class Student extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {SingleTableChild, Column} from "typeorm";
+import {SingleEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@SingleTableChild()
+@SingleEntityChild()
 export class Homesitter extends Person {
 
     @Column()
@@ -668,10 +668,10 @@ export class Homesitter extends Person {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
 
-@Table()
-@TableInheritance("class-table")
+@Entity()
+@EntityInheritance("class-table")
 @DiscriminatorColumn({ name: "type", type: "string"})
 export class Person {
 
@@ -688,10 +688,10 @@ export class Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {ClassTableChild, Column} from "typeorm";
+import {ClassEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@ClassTableChild()
+@ClassEntityChild()
 export class Employee extends Person {
 
     @Column()
@@ -701,10 +701,10 @@ export class Employee extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {ClassTableChild, Column} from "typeorm";
+import {ClassEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@ClassTableChild()
+@ClassEntityChild()
 export class Student extends Person {
 
     @Column()
@@ -714,10 +714,10 @@ export class Student extends Person {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {ClassTableChild, Column} from "typeorm";
+import {ClassEntityChild, Column} from "typeorm";
 import {Person} from "./Person";
 
-@ClassTableChild()
+@ClassEntityChild()
 export class Homesitter extends Person {
 
     @Column()

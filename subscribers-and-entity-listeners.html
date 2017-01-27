@@ -291,9 +291,9 @@ export class EverythingSubscriber implements EntitySubscriberInterface&lt;Post&g
         </p>
 
         <pre><code class="language-typescript">
-import {Table, PrimaryGeneratedColumn, Column, AfterLoad, BeforeInsert, AfterInsert, BeforeUpdate, AfterUpdate, BeforeRemove, AfterRemove} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, AfterLoad, BeforeInsert, AfterInsert, BeforeUpdate, AfterUpdate, BeforeRemove, AfterRemove} from "typeorm";
 
-@Table()
+@Entity()
 export class Post {
 
     @PrimaryGeneratedColumn()

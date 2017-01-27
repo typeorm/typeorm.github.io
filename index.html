@@ -179,7 +179,7 @@
 
         <p>
             In TypeORM tables are created from Entities.
-            An <i>Entity</i> is your model decorated by a <code>@Table</code> decorator.
+            An <i>Entity</i> is your model decorated by a <code>@Entity</code> decorator.
             You can get entities from the database and insert/update/remove them from there.
         </p>
 
@@ -204,9 +204,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table} from "typeorm";
+import {Entity} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
     id: number;
     name: string;
@@ -228,9 +228,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column} from "typeorm";
+import {Entity, Column} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
 
     @Column()
@@ -265,9 +265,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
 
     @PrimaryColumn()
@@ -303,9 +303,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
 
     @PrimaryColumn("int", { generated: true })
@@ -341,9 +341,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
 
     @PrimaryGeneratedColumn()
@@ -380,9 +380,9 @@ export class Photo {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
 
-@Table()
+@Entity()
 export class Photo {
 
     @PrimaryGeneratedColumn()
@@ -741,10 +741,10 @@ createConnection(/*...*/).then(async connection => {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
 import {Photo} from "./Photo";
 
-@Table()
+@Entity()
 export class PhotoMetadata {
 
     @PrimaryGeneratedColumn()
@@ -869,10 +869,10 @@ createConnection(/*...*/).then(async connection => {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
 import {Photo} from "./Photo";
 
-@Table()
+@Entity()
 export class PhotoMetadata {
 
     /* ... other columns */
@@ -884,10 +884,10 @@ export class PhotoMetadata {
         </code></pre>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToOne} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne} from "typeorm";
 import {PhotoMetadata} from "./PhotoMetadata";
 
-@Table()
+@Entity()
 export class Photo {
 
     /* ... other columns */
@@ -1060,10 +1060,10 @@ createConnection(options).then(async connection => {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 import {Photo} from "./Photo";
 
-@Table()
+@Entity()
 export class Author {
 
     @PrimaryGeneratedColumn()
@@ -1088,11 +1088,11 @@ export class Author {
         </p>
 
         <pre><code class="language-typescript">
-import {Table, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
 import {PhotoMetadata} from "./PhotoMetadata";
 import {Author} from "./Author";
 
-@Table()
+@Entity()
 export class Photo {
 
     /* ... other columns */
@@ -1146,9 +1146,9 @@ export class Photo {
         <b>Album</b> class:</p>
 
         <pre><code class="language-typescript">
-import {Table, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
 
-@Table()
+@Entity()
 export class Album {
 
     @PrimaryGeneratedColumn()
