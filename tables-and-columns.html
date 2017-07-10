@@ -602,8 +602,8 @@ export class Homesitter extends Person {
 import {Entity, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
 
 @Entity()
-@EntityInheritance("single-table")
-@DiscriminatorColumn({ name: "type", type: "string"})
+@TableInheritance("single-table")
+@DiscriminatorColumn({ name: "type", type: String})
 export class Person {
 
     @PrimaryGeneratedColumn()
@@ -671,7 +671,7 @@ export class Homesitter extends Person {
 import {Entity, Column, PrimaryGeneratedColumn, TableInheritance, DiscriminatorColumn} from "typeorm";
 
 @Entity()
-@EntityInheritance("class-table")
+@TableInheritance("class-table")
 @DiscriminatorColumn({ name: "type", type: "string"})
 export class Person {
 
