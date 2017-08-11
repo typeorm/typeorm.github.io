@@ -108,7 +108,6 @@
                     <li>
                         If options argument is not given, then connections will be established from the configuration
                         in the <a href="#connection-ormconfig-json">ormconfig.json</a> file.
-                        All environment-specific connections will be initialized then.
                     </li>
                     <li>
                         If ormconfig.json file is missing, then connection will be established from
@@ -319,16 +318,6 @@ export interface ConnectionOptions {
      * Alternative to it, you can use CLI and run schema:sync command.
      */
     readonly autoSchemaSync?: boolean;
-
-    /**
-     * Environment in which connection will run.
-     * Current environment is determined from the environment NODE_ENV variable's value.
-     * For example, if NODE_ENV is "test" and this property is set to "test",
-     * then this connection will be created. On any other NODE_ENV value it will be skipped.
-     * This option is specific to the configuration in the ormconfig.json file.
-     */
-    readonly environment?: string;
-
 }
         </code></pre>
 
@@ -446,7 +435,7 @@ createConnection(connectionOptions).then(connection => {
     "autoSchemaSync": true
   },
   {
-    "name": "seconary-connection",
+    "name": "secondary-connection",
     "driver": {
       "type": "postgres",
       "host": "localhost",
@@ -462,47 +451,8 @@ createConnection(connectionOptions).then(connection => {
 
         <p class="simple-links">
             You can have multiple configurations in your ormconfig.json file.
-            Each configuration should have unique name, until they are in the same environment.
+            Each configuration should have unique name.
             Each configuration is a <i><a href="#connection-options">ConnectionOptions</a></i> object.
-        </p>
-
-        <p>
-            Configurations can be environment-specific, for example:
-        </p>
-
-        <pre><code class="language-javascript">
-  {
-    "environment": "prod",
-    "name": "default",
-    "driver": {
-      "type": "mysql",
-      "host": "localhost",
-      "port": 3306,
-      "username": "root",
-      "password": "admin",
-      "database": "test"
-    },
-    "autoSchemaSync": true
-  },
-  {
-    "environment": "dev",
-    "name": "default",
-    "driver": {
-      "type": "postgres",
-      "host": "localhost",
-      "port": 5432,
-      "username": "root",
-      "password": "admin",
-      "database": "test"
-    },
-    "autoSchemaSync": true
-  }
-]
-        </code></pre>
-
-        <p>
-            Now, if you set NODE_ENV to "prod", then mysql connection will be established.
-            If you set NODE_ENV to "dev" then postgres connection will be established.
         </p>
 
         <p>
