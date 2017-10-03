@@ -67,11 +67,17 @@ h1 code, h2 code, h3 code {
 .left-panel ul a {
     color: #616161;
 }
+.left-panel ul a.router-link-active {
+    color: #E83524;
+}
 .left-panel ul a b {
     color: #414141;
 }
 .left-panel ul a:hover {
-    color: #273043;
+    color: #E83524;
+}
+.left-panel ul a b:hover {
+    color: #E83524;
 }
 
 .navbar-brand {
