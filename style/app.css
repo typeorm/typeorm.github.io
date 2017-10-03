@@ -1,0 +1,96 @@
+body {
+    padding-bottom: 20px;
+}
+h1, h2, h3 {
+    font-family: 'Open Sans', sans-serif;
+}
+a.anchor {
+    color: #E83524;
+}
+h1, h2, h3 {
+    /*
+    #273043
+    #9197AE
+    #EFF6EE
+    #FCF7F8
+    */
+    /*color: #EFAC3C;*/
+}
+h1 {
+    margin-bottom: 15px;
+}
+a {
+    color: #77A7C2;
+}
+a:hover {
+    text-decoration: none;
+}
+h2, h3 {
+    margin-top: 30px;
+    border-bottom: 1px solid #FCF7F8;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.navbar {
+    margin-bottom: 30px;
+}
+.document h1+ul, .document h1+ul ul {
+    list-style: none;
+}
+.document div>h1+ul {
+    margin-left: 0;
+    padding-left: 0;
+    line-height: 25px;
+}
+.document h1+ul li::before {
+    content: "# ";
+    color: #E83524; /* or whatever color you prefer */
+    opacity: 0.5;
+    margin-right: 5px;
+}
+code {
+    color: #77A7C2;
+}
+h1 code, h2 code, h3 code {
+    color: #333;
+}
+
+.bg-light {
+    background-color: transparent !important;
+    border-bottom: 1px solid #EEE;
+}
+
+.left-panel ul {
+    list-style: none;
+    line-height: 28px;
+}
+.left-panel ul a {
+    color: #616161;
+}
+.left-panel ul a b {
+    color: #414141;
+}
+.left-panel ul a:hover {
+    color: #273043;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+}
+
+.contribute {
+    margin-top: 20px;
+    color: #999;
+    text-align: center;
+}
+
+.contribute a {
+    color: #333;
+}
+
+.gitter {
+    background-image: url("../image/icon/gitter.svg");
+    fill: #1DA1F2;
+    width: 18px;
+    height: 18px;
+}

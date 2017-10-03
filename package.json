@@ -1,0 +1,25 @@
+{
+   "name": "typeorm.github.io",
+   "version": "0.0.2",
+   "dependencies": {
+      "body-parser": "^1.18.1",
+      "bootstrap": "^4.0.0-beta",
+      "express": "^4.15.4",
+      "font-awesome": "^4.7.0",
+      "mysql": "^2.14.1",
+      "prismjs": "^1.6.0",
+      "reflect-metadata": "^0.1.10",
+      "showdown": "^1.7.4",
+      "typeorm": "0.1.0-alpha.46",
+      "vue": "^2.4.2",
+      "vue-router": "^2.7.0"
+   },
+   "devDependencies": {
+      "ts-node": "3.3.0",
+      "@types/node": "^8.0.29",
+      "typescript": "2.5.2"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts"
+   }
+}
