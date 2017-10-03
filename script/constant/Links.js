@@ -1,6 +1,6 @@
 const Links = [
     {
-        url: "/",
+        url: "",
         name: "Getting Started"
     },
     {
