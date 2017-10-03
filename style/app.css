@@ -94,3 +94,7 @@ h1 code, h2 code, h3 code {
     width: 18px;
     height: 18px;
 }
+
+pre {
+    overflow: auto !important;
+}

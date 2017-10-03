@@ -52,16 +52,20 @@ const MainPage = {
         <div class="col-12 col-sm-5 col-md-4 left-panel">
             <ul>
                 <li v-for="link in links">
-                    <div v-if="link.links">  
-                        <router-link :to="link.links[0].url"><b>{{ link.name }}</b></router-link> 
+                    <div v-if="link.links">
+                        <div @click="goToLink()">
+                            <router-link :to="'/' + link.links[0].url"><b>{{ link.name }}</b></router-link> 
+                        </div>
                         <ul>
-                            <li v-for="subLink in link.links">
-                                <router-link :to="subLink.url">{{ subLink.name }}</router-link>
+                            <li v-for="subLink in link.links" @click="goToLink()">
+                                <router-link :to="'/' + subLink.url">{{ subLink.name }}</router-link>
                             </li>
                         </ul>           
                     </div>
-                    <div v-else>             
-                        <router-link :to="link.url"><b>{{ link.name }}</b></router-link>
+                    <div v-else>
+                        <div @click="goToLink()">          
+                            <router-link :to="'/' + link.url"><b>{{ link.name }}</b></router-link>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -76,5 +80,10 @@ const MainPage = {
         return {
             links: Links
         };
+    },
+    methods: {
+        goToLink: function() {
+            window.scrollTo(0,0);
+        }
     }
 };
