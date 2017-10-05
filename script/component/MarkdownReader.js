@@ -25,6 +25,8 @@ const MarkdownReader = {
             const fragmentElement = document.getElementById(fragment);
             if (fragmentElement)
                 fragmentElement.scrollIntoView();
+            else
+                window.scrollTo(0, 0);
         },
         loadFile: function(file) {
             return fetch(file)
@@ -53,7 +55,15 @@ const MarkdownReader = {
                         }];
                     });
 
-                    const converter = new showdown.Converter({ extensions: ['header-anchors', 'links-replacer'] });
+                    showdown.extension('other-page-links-replacer', () => {
+                        return [{
+                            type: "html",
+                            regex: /<a href="\.\/?(.*)\.md\/?(.*)">/g,
+                            replace: "<a href='#/$1/$2'>"
+                        }];
+                    });
+
+                    const converter = new showdown.Converter({ extensions: ['header-anchors', 'links-replacer', 'other-page-links-replacer'] });
                     converter.setFlavor('github');
                     converter.setOption('simpleLineBreaks', false);
 
