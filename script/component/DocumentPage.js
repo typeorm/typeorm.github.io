@@ -40,7 +40,7 @@ const DocumentPage = {
             if (this.document === "changelog") {
                 return `https://raw.githubusercontent.com/typeorm/typeorm/master/CHANGELOG.md`;
 
-            } else if (!this.document) {
+            } else if (!this.document || this.document === "readme") {
                 return `https://raw.githubusercontent.com/typeorm/typeorm/master/README.md`;
 
             } else {
