@@ -104,3 +104,7 @@ h1 code, h2 code, h3 code {
 pre {
     overflow: auto !important;
 }
+
+ol {
+    margin-bottom: 2rem;
+}
