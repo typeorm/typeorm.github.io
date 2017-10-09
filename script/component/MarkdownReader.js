@@ -9,6 +9,13 @@ const MarkdownReader = {
     },
     watch: {
         'file': function(file) {
+            if(this.$route.params.document) {
+                this.document = this.$route.params.document;
+            }
+            else {
+                this.document = "readme";
+            }
+
             this.loadFile(file);
         },
         'fragment': function(fragment) {
@@ -16,10 +23,6 @@ const MarkdownReader = {
         }
     },
     created: function () {
-        if(this.$route.params.document) {
-            this.document = this.$route.params.document;
-        }
-
         this.loadFile(this.file)
             .then(() => {
                 this.scrollToFragment(this.fragment);
@@ -50,7 +53,6 @@ const MarkdownReader = {
                             replace: ancTpl
                         }];
                     });
-
 
                     showdown.extension('links-replacer', () => {
                         return [{
