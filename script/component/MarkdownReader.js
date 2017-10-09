@@ -4,6 +4,7 @@ const MarkdownReader = {
     data: function() {
         return {
             html: "",
+            document: "readme"
         }
     },
     watch: {
@@ -15,6 +16,10 @@ const MarkdownReader = {
         }
     },
     created: function () {
+        if(this.$route.params.document) {
+            this.document = this.$route.params.document;
+        }
+
         this.loadFile(this.file)
             .then(() => {
                 this.scrollToFragment(this.fragment);
@@ -51,14 +56,14 @@ const MarkdownReader = {
                         return [{
                             type: "html",
                             regex: /<a href="#(.*)">/g,
-                            replace: "<a href='#" + this.$route.params.document + "/$1'>"
+                            replace: "<a href='#" + this.document + "/$1'>"
                         }];
                     });
 
                     showdown.extension('other-page-links-replacer', () => {
                         return [{
                             type: "html",
-                            regex: /<a href="(\.\/)?(.*)\.md\/?(.*)">/g,
+                            regex: /<a href="\.?\/?(docs\/)?(.*)\.md\#?(.*)">/g,
                             replace: "<a href='#/$2/$3'>"
                         }];
                     });
