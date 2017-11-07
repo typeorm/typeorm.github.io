@@ -9,13 +9,7 @@ const MarkdownReader = {
     },
     watch: {
         'file': function(file) {
-            if(this.$route.params.document) {
-                this.document = this.$route.params.document;
-            }
-            else {
-                this.document = "readme";
-            }
-
+            this.setDocument();
             this.loadFile(file);
         },
         'fragment': function(fragment) {
@@ -23,6 +17,7 @@ const MarkdownReader = {
         }
     },
     created: function () {
+        this.setDocument();
         this.loadFile(this.file)
             .then(() => {
                 this.scrollToFragment(this.fragment);
@@ -35,6 +30,14 @@ const MarkdownReader = {
                 fragmentElement.scrollIntoView();
             else
                 window.scrollTo(0, 0);
+        },
+        setDocument: function () {
+            if(this.$route.params.document) {
+                this.document = this.$route.params.document;
+            }
+            else {
+                this.document = "readme";
+            }
         },
         loadFile: function(file) {
             return fetch(file)
@@ -58,7 +61,7 @@ const MarkdownReader = {
                         return [{
                             type: "html",
                             regex: /<a href="#(.*)">/g,
-                            replace: "<a href='#" + this.document + "/$1'>"
+                            replace: "<a href='#/" + this.document + "/$1'>"
                         }];
                     });
 
