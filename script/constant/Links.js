@@ -47,6 +47,10 @@ const Links = [
                 url: "tree-entities",
                 name: "Tree Entities"
             },
+            {
+                url: "separating-entity-definition",
+                name: "Separating Entity definition"
+            },
         ]
     },
     {
