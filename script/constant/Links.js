@@ -49,7 +49,7 @@ const Links = [
             },
             {
                 url: "separating-entity-definition",
-                name: "Separating Entity definition"
+                name: "Separating Entity Definition"
             },
         ]
     },
