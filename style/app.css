@@ -94,13 +94,6 @@ h1 code, h2 code, h3 code {
     color: #333;
 }
 
-.gitter {
-    background-image: url("../image/icon/gitter.svg");
-    fill: #1DA1F2;
-    width: 18px;
-    height: 18px;
-}
-
 pre {
     overflow: auto !important;
 }
