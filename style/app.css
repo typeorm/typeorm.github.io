@@ -101,3 +101,9 @@ pre {
 ol {
     margin-bottom: 2rem;
 }
+.language {
+    padding: 5px;
+}
+.language i {
+    font-size: 18px;
+}

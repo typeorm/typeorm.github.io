@@ -1,5 +1,5 @@
 const MainPage = {
-    template: `<div>
+  template: `<div>
     <nav class="navbar navbar-expand navbar-light bg-light">
         <!--<img src="image/logo-large.png" width="10%" height="10%">-->
         <a class="navbar-brand" href="#"><span style="color: #E83524">Type</span><span style="color: #000">ORM</span></a>
@@ -42,7 +42,7 @@ const MainPage = {
                         </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link language" href="http://typeorm.io/zh_CN" title="中文文档"><i class="fa fa-language"></i> 中文</a>
+                      <a class="nav-link language" href="http://typeorm.io" title="English"><i class="fa fa-language"></i> English</a>
                     </li>
                 </ul>
             <!--<form class="form-inline my-2 my-lg-0">
@@ -79,14 +79,14 @@ const MainPage = {
     </div>
 </div>
 `,
-    data: function() {
-        return {
-            links: Links
-        };
-    },
-    methods: {
-        goToLink: function() {
-            window.scrollTo(0,0);
-        }
+  data: function() {
+    return {
+      links: Links
+    };
+  },
+  methods: {
+    goToLink: function() {
+      window.scrollTo(0, 0);
     }
+  }
 };
