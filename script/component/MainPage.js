@@ -69,6 +69,7 @@ const MainPage = {
                     </div>
                 </li>
             </ul>
+            <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio" id="_carbonads_js"></script>
         </div>
         <div class="col-12 col-sm-7 col-md-8">
             <router-view></router-view>
