@@ -2,7 +2,7 @@ const MainPage = {
     template: `<div>
     <nav class="navbar navbar-expand navbar-light bg-light">
         <!--<img src="image/logo-large.png" width="10%" height="10%">-->
-        <a class="navbar-brand" href="#"><span style="color: #E83524">Type</span><span style="color: #000">ORM</span></a>
+        <a class="navbar-brand" href="/"><span style="color: #E83524">Type</span><span style="color: #000">ORM</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,8 +41,16 @@ const MainPage = {
                             </svg>
                         </a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link language" href="http://typeorm.io/zh_CN" title="中文文档"><i class="fa fa-language"></i> 中文</a>
+                    <li class="nav-item dropdown language">
+                        <a class="nav-link" href="#" title="Language" id="lang-choose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg aria-labelledby="simpleicons-language-icon" role="img" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                                <title id="simpleicons-language-icon">Language</title>
+                                <path d="M1024 512c0-281.6-230.4-512-512-512S0 230.4 0 512c0 262.4 198.4 473.6 448 505.6 12.8 0 32 6.4 51.2 6.4h19.2c281.6-6.4 505.6-230.4 505.6-512z m-70.4 6.4c0-25.6-6.4-51.2-12.8-76.8v-25.6c6.4 32 12.8 57.6 12.8 89.6v12.8zM70.4 512c0-32 6.4-64 6.4-89.6 19.2 19.2 64 19.2 76.8-12.8 19.2 12.8 44.8 12.8 44.8 38.4 0 76.8 0 160 70.4 160 0 0 38.4 12.8 57.6 57.6 6.4 12.8 32 0 57.6 0 12.8 0 0 19.2 0 70.4 0 44.8 102.4 121.6 102.4 121.6 0 32 0 57.6 6.4 76.8-25.6 0-44.8 0-57.6 6.4-204.8-32-364.8-211.2-364.8-428.8z m550.4 422.4c0-12.8-12.8-19.2-32-12.8 12.8-64 19.2-96 51.2-121.6 44.8-38.4 6.4-83.2-25.6-76.8-25.6 6.4-12.8-32-32-32-25.6 0-51.2-51.2-89.6-64-19.2-6.4-38.4-32-64-32s-57.6 19.2-57.6 6.4c0-51.2-6.4-89.6-6.4-108.8 0-12.8-6.4-6.4 25.6-6.4 19.2 0 6.4-38.4 25.6-38.4 19.2 0 57.6 19.2 70.4 6.4 12.8-6.4 70.4 166.4 70.4 25.6 0-19.2-6.4-44.8 0-57.6 32-57.6 64-108.8 64-115.2 0-6.4-32-6.4-57.6 0-6.4 0 0 19.2-12.8 19.2-44.8 12.8-89.6-12.8-76.8-32 12.8-25.6 70.4-12.8 70.4-57.6 0-25.6 6.4-57.6 6.4-76.8 64 12.8 57.6-83.2-38.4-89.6 192 0 352 121.6 409.6 294.4 0 0-6.4-6.4-12.8-6.4-25.6-70.4-96-19.2-76.8 44.8-128 96-96 166.4-51.2 204.8 19.2 19.2 44.8 51.2 57.6 70.4-12.8 44.8 51.2 25.6 89.6-44.8-38.4 147.2-160 262.4-307.2 300.8z" fill="#2c2c2c" p-id="1930"></path>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="lang-choose">
+                            <a v-for="(lang,v) in langs" :key="v" class="dropdown-item" @click="changeLang(v)">{{lang}}</a>
+                        </div>
                     </li>
                 </ul>
             <!--<form class="form-inline my-2 my-lg-0">
@@ -79,14 +87,20 @@ const MainPage = {
     </div>
 </div>
 `,
-    data: function() {
+    data: function () {
         return {
-            links: Links
+            links: this.$t("links"),
+            langs: { en: "English", "zh_CN": "中文" }
         };
     },
     methods: {
-        goToLink: function() {
-            window.scrollTo(0,0);
+        goToLink: function () {
+            window.scrollTo(0, 0);
+        },
+        changeLang: function (locale) {
+            $cookies.set("locale", locale);
+            this.$i18n.locale = locale;
+            window.location.reload(true);
         }
     }
 };
