@@ -82,7 +82,7 @@ const MainPage = {
             links: Links
         };
     },
-    ready() {
+    mounted() {
          // <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio" id="_carbonads_js"></script>
          var scriptEl = document.createElement('script');
          scriptEl.setAttribute('src', '//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio');
