@@ -69,7 +69,7 @@ const MainPage = {
                     </div>
                 </li>
             </ul>
-            <div ref="carbon"></div>
+            <div class="carbon-container" ref="carbon"></div>
           </div>
         <div class="col-12 col-sm-7 col-md-8">
             <router-view></router-view>
