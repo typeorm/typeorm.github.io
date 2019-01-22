@@ -7,15 +7,13 @@ TypeORM 文档网站
 
 ## TypeORM 是什么？
 
-TypeORM 是一个可以在 NodeJS、Browser、Cordova、PhoneGap 和 Ionic 平台上运行的 [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)，同时也可以与 TypeScript 和 JavaScript(ES5，ES6，ES7) 一起使用。
-它的目标是始终支持最新的 JavaScript 特性，并提供可帮助你开发使用任何类型数据库的应用程序 - 从具有少量表的小型应用程序到具有多个数据库的大型企业应用程序。
+TypeORM 是一个[ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)框架，它可以运行在 NodeJS、Browser、Cordova、PhoneGap、Ionic、React Native、Expo 和 Electron 平台上，可以与 TypeScript 和 JavaScript (ES5,ES6,ES7,ES8)一起使用。 它的目标是始终支持最新的 JavaScript 特性并提供额外的特性以帮助你开发任何使用数据库的（不管是只有几张表的小型应用还是拥有多数据库的大型企业应用）应用程序。
 
-与当前存在的所有其他 JavaScript ORM 不同，TypeORM 支持 Active Record 和 Data Mapper 模式，这意味着你可以以最高效的方式编写高质量、松散耦合、可扩展、可维护的应用程序。
+不同于现有的所有其他 JavaScript ORM 框架，TypeORM 支持 Active Record 和 Data Mapper 模式，这意味着你可以以最高效的方式编写高质量的、松耦合的、可扩展的、可维护的应用程序。
 
-TypeORM受其他ORM的启发，例如 [Hibernate](http://hibernate.org/orm/)，
-[Doctrine](http://www.doctrine-project.org/) 和 [Entity Framework](https://www.asp.net/entity-framework)。
+TypeORM 参考了很多其他优秀 ORM 的实现, 比如 [Hibernate](http://hibernate.org/orm/), [Doctrine](http://www.doctrine-project.org/) 和 [Entity Framework](https://www.asp.net/entity-framework)。
 
-一些 TypeORM 特性：
+TypeORM 的一些特性：
 
 * 支持 DataMapper 和 ActiveRecord (随你选择)
 * 实体和列
