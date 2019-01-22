@@ -69,7 +69,7 @@ const MainPage = {
                     </div>
                 </li>
             </ul>
-            <div v-el:script-holder></div>
+            <div ref="script-holder"></div>
           </div>
         <div class="col-12 col-sm-7 col-md-8">
             <router-view></router-view>
@@ -88,7 +88,7 @@ const MainPage = {
          scriptEl.setAttribute('src', '//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio');
          scriptEl.setAttribute('id', '_carbonads_js');
          scriptEl.setAttribute('async', null);
-         this.$els.scriptHolder.appendChild(scriptEl);
+         this.$refs.scriptHolder.appendChild(scriptEl);
     },
     methods: {
         goToLink: function() {
