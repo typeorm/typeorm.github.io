@@ -102,6 +102,14 @@ ol {
     margin-bottom: 2rem;
 }
 
+.carbon-container {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-left: 80px;
+    margin-right: 80px;
+    min-width: 120px;
+}
+
 #carbonads {
   --width: 180px;
   --font-size: 14px;
