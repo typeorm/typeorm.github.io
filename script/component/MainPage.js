@@ -80,7 +80,8 @@ const MainPage = {
                     </div>
                 </li>
             </ul>
-        </div>
+            <div class="carbon-container" ref="carbon"></div>
+          </div>
         <div class="col-12 col-sm-7 col-md-8">
             <router-view></router-view>
         </div>
@@ -92,6 +93,14 @@ const MainPage = {
             links: this.$t("links"),
             langs: { en: "English", "zh_CN": "中文" }
         };
+    },
+    mounted() {
+         // <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio" id="_carbonads_js"></script>
+         var scriptEl = document.createElement('script');
+         scriptEl.setAttribute('src', '//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio');
+         scriptEl.setAttribute('id', '_carbonads_js');
+         scriptEl.setAttribute('async', null);
+         this.$refs.carbon.appendChild(scriptEl);
     },
     methods: {
         goToLink: function () {
