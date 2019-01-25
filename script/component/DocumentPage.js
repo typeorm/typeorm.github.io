@@ -4,7 +4,7 @@ const DocumentPage = {
     <markdown-reader :file="readUrl" :fragment="fragment"></markdown-reader>
     
     <div class="contribute small">
-        Found a typo and want to contribute to the documentation? <a :href="editUrl">Edit this page on Github!</a>
+        {{$t("contribute")}} <a :href="editUrl">{{$t("edit")}}</a>
     </div>
 </div>
 `,
@@ -12,6 +12,9 @@ const DocumentPage = {
         return {
             document: this.$route.params.document,
             fragment: this.$route.params.fragment,
+            locale: $cookies.get("locale") || "en",
+            readLink: "https://raw.githubusercontent.com/typeorm/typeorm/master/",
+            editLink: "https://github.com/typeorm/typeorm/edit/master/"
         };
     },
     watch: {
@@ -26,7 +29,7 @@ const DocumentPage = {
     },
     methods: {
         updateTitle: function() {
-            const link = Links.find(link => link.url === this.document);
+            const link = this.$t("links").find(link => link.url === this.document);
             if (link) {
                 window.document.title = link.name + " | TypeORM";
             }
@@ -39,23 +42,19 @@ const DocumentPage = {
         readUrl: function () {
             if (this.document === "changelog") {
                 return `https://raw.githubusercontent.com/typeorm/typeorm/master/CHANGELOG.md`;
-
             } else if (!this.document || this.document === "readme") {
-                return `https://raw.githubusercontent.com/typeorm/typeorm/master/README.md`;
-
+               return this.readLink + (this.locale === "en"? `README.md`: `README-${this.locale}.md`);
             } else {
-                return `https://raw.githubusercontent.com/typeorm/typeorm/master/docs/${this.document}.md`;
+                return this.readLink + (this.locale === "en"? `docs/${this.document}.md`: `docs/${this.locale}/${this.document}.md`);
             }
         },
         editUrl: function () {
             if (this.document === "changelog") {
                 return `https://github.com/typeorm/typeorm/edit/master/CHANGELOG.md`;
-
             } else if (!this.document) {
-                return `https://github.com/typeorm/typeorm/edit/master/README.md`;
-
+                return  this.editLink + (this.locale === "en"? "README.md": `README-${this.locale}.md`);
             } else {
-                return `https://github.com/typeorm/typeorm/edit/master/docs/${this.document}.md`;
+                return  this.editLink + (this.locale === "en"? `docs/${this.document}.md`: `docs/${this.locale}/${this.document}.md`);
             }
         }
     }

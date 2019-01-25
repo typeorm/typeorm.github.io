@@ -101,6 +101,34 @@ pre {
 ol {
     margin-bottom: 2rem;
 }
+.language > .nav-dropdown {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    border: 1px solid;
+    right: 20px;
+    z-index: 9;
+}
+
+.language .dropdown-menu a {
+    color: #616161;
+    cursor: pointer;
+}
+
+.language .dropdown-item:hover, 
+.language .dropdown-item:focus {
+    color: #E83524 !important;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+  
+.language .dropdown-item.active, 
+.language .dropdown-item:active {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+}
 
 .carbon-container {
     border-top: 1px solid #eee;
