@@ -15,10 +15,10 @@ const locale_zh_CN = {
             name: "使用ormconfig.json"
         }, {
             url: "connection-options",
-            name: "连接选项"
+            name: "Connection选项"
         }, {
             url: "multiple-connections",
-            name: "多个连接"
+            name: "多个Connection"
         }, {
             url: "connection-api",
             name: "Connection API"
@@ -72,7 +72,7 @@ const locale_zh_CN = {
             name: "使用Repository"
         }, {
             url: "find-options",
-            name: "find选项"
+            name: "Find选项"
         }, {
             url: "custom-repository",
             name: "自定义Repository"
