@@ -105,6 +105,13 @@ const MainPage = {
     methods: {
         goToLink: function () {
             window.scrollTo(0, 0);
+
+            var scriptEl = document.createElement('script');
+            scriptEl.setAttribute('src', '//cdn.carbonads.com/carbon.js?serve=CK7DL53W&placement=typeormio');
+            scriptEl.setAttribute('id', '_carbonads_js');
+            scriptEl.setAttribute('async', null);
+            this.$refs.carbon.innerHTML = ''
+            this.$refs.carbon.appendChild(scriptEl);
         },
         changeLang: function (locale) {
             $cookies.set("locale", locale);
