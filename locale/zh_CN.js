@@ -9,7 +9,7 @@ const locale_zh_CN = {
         name: "数据库连接",
         links: [{
             url: "connection",
-            name: "使用连接"
+            name: "使用Connection"
         }, {
             url: "using-ormconfig",
             name: "使用ormconfig.json"
@@ -21,7 +21,7 @@ const locale_zh_CN = {
             name: "多个连接"
         }, {
             url: "connection-api",
-            name: "连接API"
+            name: "Connection API"
         }]
     }, {
         name: "实体",
@@ -54,7 +54,7 @@ const locale_zh_CN = {
             name: "多对一和一对多"
         }, {
             url: "many-to-many-relations",
-            name: "多对对y"
+            name: "多对多"
         }, {
             url: "eager-and-lazy-relations",
             name: "Eager 和 Lazy 关系"
@@ -63,29 +63,29 @@ const locale_zh_CN = {
             name: "关系常见问题"
         }]
     }, {
-        name: "实体管理器和存储库",
+        name: "Entity Manager 和 Repository",
         links: [{
             url: "working-with-entity-manager",
-            name: "使用实体管理器"
+            name: "使用Entity Manager"
         }, {
             url: "working-with-repository",
-            name: "使用存储库"
+            name: "使用Repository"
         }, {
             url: "find-options",
-            name: "查找选项"
+            name: "find选项"
         }, {
             url: "custom-repository",
-            name: "自定义存储库"
+            name: "自定义Repository"
         }, {
             url: "entity-manager-api",
             name: "实体管理器API"
         }, {
             url: "repository-api",
-            name: "存储库API"
+            name: "Entity Manager API"
         }]
     }, {
         url: "query-builder",
-        name: "查询生成器",
+        name: "Query Builder",
         links: [{
             url: "select-query-builder",
             name: "使用Query Builder查询"
@@ -100,10 +100,10 @@ const locale_zh_CN = {
             name: "使用Query Builder删除"
         }, {
             url: "relational-query-builder",
-            name: "关系查询生成器"
+            name: "与Relations结合"
         }, {
             url: "caching",
-            name: "缓存结果"
+            name: "结果缓存"
         }]
     }, {
         name: "进阶主题",
