@@ -38,6 +38,9 @@ const locale_en = {
             url: "tree-entities",
             name: "Tree Entities"
         }, {
+            url: "view-entities",
+            name: "View Entities"
+        }, {
             url: "separating-entity-definition",
             name: "Separating Entity Definition"
         }]
