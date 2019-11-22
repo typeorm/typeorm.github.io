@@ -68,7 +68,7 @@ const MarkdownReader = {
                     showdown.extension('other-page-links-replacer', () => {
                         return [{
                             type: "html",
-                            regex: /<a href="\.?\/?(docs\/)?(.*)\.md\#?(.*)">/g,
+                            regex: /<a href="\.?\/?(docs\/)?(.*?)\.md\#?(.*?)">/g,
                             replace: "<a href='#/$2/$3'>"
                         }];
                     });
