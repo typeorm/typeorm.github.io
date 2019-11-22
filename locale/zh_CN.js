@@ -81,7 +81,7 @@ const locale_zh_CN = {
             name: "实体管理器API"
         }, {
             url: "repository-api",
-            name: "Entity Manager API"
+            name: "Repository API"
         }]
     }, {
         url: "query-builder",
