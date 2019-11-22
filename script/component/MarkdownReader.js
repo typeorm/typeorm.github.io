@@ -10,7 +10,10 @@ const MarkdownReader = {
     watch: {
         'file': function(file) {
             this.setDocument();
-            this.loadFile(file);
+            this.loadFile(file)
+                .then(() => {
+                    this.scrollToFragment(this.fragment);
+                });
         },
         'fragment': function(fragment) {
             this.scrollToFragment(fragment);
