@@ -60,6 +60,11 @@ h1 code, h2 code, h3 code {
     border-bottom: 1px solid #EEE;
 }
 
+.left-panel {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
 .left-panel ul {
     list-style: none;
     line-height: 28px;
