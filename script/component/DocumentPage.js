@@ -1,7 +1,7 @@
 const DocumentPage = {
     template: `
 <div class="document">
-    <markdown-reader :file="readUrl" :fragment="fragment"></markdown-reader>
+    <markdown-reader :file="readUrl" :hash="hash"></markdown-reader>
     
     <div class="contribute small">
         {{$t("contribute")}} <a :href="editUrl">{{$t("edit")}}</a>
@@ -11,7 +11,7 @@ const DocumentPage = {
     data: function() {
         return {
             document: this.$route.params.document,
-            fragment: this.$route.params.fragment,
+            hash: this.$route.hash,
             locale: $cookies.get("locale") || "en",
             readLink: "https://raw.githubusercontent.com/typeorm/typeorm/master/",
             editLink: "https://github.com/typeorm/typeorm/edit/master/"
@@ -20,7 +20,7 @@ const DocumentPage = {
     watch: {
         '$route': function(to, from) {
             this.document = to.params.document;
-            this.fragment = to.params.fragment;
+            this.hash = to.hash;
             this.updateTitle();
         }
     },

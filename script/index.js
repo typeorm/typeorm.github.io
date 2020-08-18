@@ -9,16 +9,31 @@ const i18n = new VueI18n({
   locale: $cookies.get("locale") || "en", // set locale
   fallbackLocale: "en",
   messages // set locale messages
-})
+});
+
+const router = new VueRouter({
+  mode: "history",
+  routes: [{ path: "/:document?/:fragment?", component: DocumentPage }]
+});
+
+// Because the documentation previously used "hash" mode in the Router, paths
+// starting with a hash will be redirected to prevent breaking old permalinks.
+router.beforeEach((to, from, next) => {
+  if (to.fullPath.substr(0, 3) === "/#/") {
+    // Remove leading hash and replace following slash with hash.
+    // Before: https://typeorm.io/#/entities/entity-columns
+    // After:  https://typeorm.io/entities#entity-columns
+    const path = to.fullPath.substr(3).replace("/", "#");
+    next(path);
+    return;
+  }
+  next();
+});
 
 new Vue({
   el: "#app",
   i18n,
-  router: new VueRouter({
-    routes: [
-      { path: "/:document?/:fragment?", component: DocumentPage },
-    ]
-  }),
+  router: router,
   components: {
     "main-page": MainPage,
     "markdown-reader": MarkdownReader,

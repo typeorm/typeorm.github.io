@@ -1,6 +1,6 @@
 const MarkdownReader = {
     template: `<div v-html="html"></div>`,
-    props: ["file", "fragment"],
+    props: ["file", "hash"],
     data: function() {
         return {
             html: "",
@@ -12,27 +12,34 @@ const MarkdownReader = {
             this.setDocument();
             this.loadFile(file)
                 .then(() => {
-                    this.scrollToFragment(this.fragment);
+                    this.scrollToHash(this.hash);
                 });
         },
-        'fragment': function(fragment) {
-            this.scrollToFragment(fragment);
+        'hash': function(hash) {
+            this.scrollToHash(hash);
         }
     },
     created: function () {
         this.setDocument();
         this.loadFile(this.file)
             .then(() => {
-                this.scrollToFragment(this.fragment);
+                this.scrollToHash(this.hash);
             });
     },
     methods: {
-        scrollToFragment: function(fragment) {
-            const fragmentElement = document.getElementById(fragment);
-            if (fragmentElement)
-                fragmentElement.scrollIntoView();
-            else
+        scrollToHash: function(hash) {
+            if (!hash) {
                 window.scrollTo(0, 0);
+                return;
+            }
+
+            const hashElement = document.getElementById(hash.substr(1));
+            if (!hashElement){
+                window.scrollTo(0, 0);
+                return;
+            }
+
+            hashElement.scrollIntoView();
         },
         setDocument: function () {
             if(this.$route.params.document) {
@@ -51,7 +58,7 @@ const MarkdownReader = {
 
                     showdown.extension('header-anchors', () => {
 
-                        var ancTpl = '$1<a id="user-content-$3" class="anchor" href="#' + this.$route.params.document + '/$3" aria-hidden="true">#</a> $4';
+                        var ancTpl = '$1<a id="user-content-$3" class="anchor" href="#$3" aria-hidden="true">#</a> $4';
 
                         return [{
                             type: "html",
@@ -60,23 +67,7 @@ const MarkdownReader = {
                         }];
                     });
 
-                    showdown.extension('links-replacer', () => {
-                        return [{
-                            type: "html",
-                            regex: /<a href="#(.*)">/g,
-                            replace: "<a href='#/" + this.document + "/$1'>"
-                        }];
-                    });
-
-                    showdown.extension('other-page-links-replacer', () => {
-                        return [{
-                            type: "html",
-                            regex: /<a href="\.?\/?(docs\/)?(.*?)\.md\#?(.*?)">/g,
-                            replace: "<a href='#/$2/$3'>"
-                        }];
-                    });
-
-                    const converter = new showdown.Converter({ extensions: ['header-anchors', 'links-replacer', 'other-page-links-replacer'] });
+                    const converter = new showdown.Converter({ extensions: ['header-anchors'] });
                     converter.setFlavor('github');
                     converter.setOption('simpleLineBreaks', false);
 
