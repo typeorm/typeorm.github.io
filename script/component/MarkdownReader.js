@@ -76,7 +76,7 @@ const MarkdownReader = {
                         }];
                     });
 
-                    const converter = new showdown.Converter({ extensions: ['header-anchors', 'links-replacer', 'other-page-links-replacer'] });
+                    const converter = new showdown.Converter({ metadata: true, extensions: ['header-anchors', 'links-replacer', 'other-page-links-replacer'] });
                     converter.setFlavor('github');
                     converter.setOption('simpleLineBreaks', false);
 
