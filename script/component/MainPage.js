@@ -60,7 +60,7 @@ const MainPage = {
         </div>
     </nav>
     <div class="row">
-        <div class="col-12 col-sm-5 col-md-4 left-panel">
+        <div class="col-12 col-sm-5 col-md-4 left-panel sticky-top">
             <ul>
                 <li v-for="link in links">
                     <div v-if="link.links">
