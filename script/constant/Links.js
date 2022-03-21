@@ -4,27 +4,23 @@ const Links = [
         name: "Getting Started"
     },
     {
-        name: "Connection",
+        name: "DataSource",
         links: [
             {
-                url: "connection",
+                url: "data-source",
                 name: "Working with Connection"
             },
             {
-                url: "using-ormconfig",
-                name: "Using ormconfig.json"
+                url: "data-source-options",
+                name: "Data Source Options"
             },
             {
-                url: "connection-options",
-                name: "Connection Options"
+                url: "multiple-data-sources",
+                name: "Multiple Data Sources"
             },
             {
-                url: "multiple-connections",
-                name: "Multiple Connections"
-            },
-            {
-                url: "connection-api",
-                name: "Connection API"
+                url: "data-source-api",
+                name: "DataSource API"
             }
         ]
     },
