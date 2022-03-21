@@ -25,6 +25,9 @@ const MainPage = {
                             </svg>
                         </a>
                     </li>-->
+                    <li class="nav-item" style="margin-inline-end: 16px">
+                        <div id="docsearch"></div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://join.slack.com/t/typeorm/shared_invite/zt-uu12ljeb-OH_0086I379fUDApYJHNuw" title="Slack">
                             <svg aria-labelledby="simpleicons-slack-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#FF0064">
@@ -102,6 +105,13 @@ const MainPage = {
          scriptEl.setAttribute('id', '_carbonads_js');
          scriptEl.setAttribute('async', null);
          this.$refs.carbon.appendChild(scriptEl);
+
+        docsearch({
+            container: '#docsearch',
+            appId: 'YOUR_APP_ID', // TODO: replace with `appId` from https://docsearch.algolia.com/apply/
+            indexName: 'YOUR_INDEX_NAME', // TODO: replace with `indexName` from https://docsearch.algolia.com/apply/
+            apiKey: 'YOUR_SEARCH_API_KEY' // TODO: replace with `apiKey` from https://docsearch.algolia.com/apply/
+        });
     },
     methods: {
         goToLink: function () {
