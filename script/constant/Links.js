@@ -8,7 +8,7 @@ const Links = [
         links: [
             {
                 url: "data-source",
-                name: "Working with Connection"
+                name: "Working with Data Source"
             },
             {
                 url: "data-source-options",

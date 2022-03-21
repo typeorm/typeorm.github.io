@@ -91,7 +91,8 @@ const MainPage = {
     data: function () {
         return {
             links: this.$t("links"),
-            langs: { en: "English", "zh_CN": "简体中文" }
+            langs: { en: "English"/*, "zh_CN": "简体中文"*/ }
+            // to enable chinese back we need to update the documentation
         };
     },
     mounted() {

@@ -6,23 +6,25 @@ const locale_en = {
         url: "",
         name: "Getting Started"
     }, {
-        name: "Connection",
-        links: [{
-            url: "connection",
-            name: "Working with Connection"
-        }, {
-            url: "using-ormconfig",
-            name: "Using ormconfig.json"
-        }, {
-            url: "connection-options",
-            name: "Connection Options"
-        }, {
-            url: "multiple-connections",
-            name: "Multiple Connections"
-        }, {
-            url: "connection-api",
-            name: "Connection API"
-        }]
+        name: "DataSource",
+        links: [
+            {
+                url: "data-source",
+                name: "Working with Data Source"
+            },
+            {
+                url: "data-source-options",
+                name: "Data Source Options"
+            },
+            {
+                url: "multiple-data-sources",
+                name: "Multiple Data Sources"
+            },
+            {
+                url: "data-source-api",
+                name: "DataSource API"
+            }
+        ]
     }, {
         name: "Entity",
         links: [{
@@ -167,9 +169,6 @@ const locale_en = {
         //     name: "Internals"
         // },
         {
-            url: "roadmap",
-            name: "Roadmap"
-        }, {
             url: "changelog",
             name: "Changelog"
         }, {
