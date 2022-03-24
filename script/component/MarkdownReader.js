@@ -68,7 +68,7 @@ const MarkdownReader = {
                         return [{
                             type: "html",
                             regex: /<a href="#(.*)">/g,
-                            replace: "<a href='/" + this.document + "#$1'>"
+                            replace: "<a href='/" + (this.document ? this.document + "#" : "") + "$1'>"
                         }];
                     });
 
