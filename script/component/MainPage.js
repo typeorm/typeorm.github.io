@@ -108,9 +108,9 @@ const MainPage = {
 
         docsearch({
             container: '#docsearch',
-            appId: 'YOUR_APP_ID', // TODO: replace with `appId` from https://docsearch.algolia.com/apply/
-            indexName: 'YOUR_INDEX_NAME', // TODO: replace with `indexName` from https://docsearch.algolia.com/apply/
-            apiKey: 'YOUR_SEARCH_API_KEY' // TODO: replace with `apiKey` from https://docsearch.algolia.com/apply/
+            appId: '2UUKVSBT3M',
+            indexName: 'typeorm',
+            apiKey: '8392de2c2e76d873b60bf10562aab788'
         });
     },
     methods: {
