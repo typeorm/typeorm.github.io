@@ -25,6 +25,9 @@ const MainPage = {
                             </svg>
                         </a>
                     </li>-->
+                    <li class="nav-item" style="margin-inline-end: 16px">
+                        <div id="docsearch"></div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://join.slack.com/t/typeorm/shared_invite/zt-uu12ljeb-OH_0086I379fUDApYJHNuw" title="Slack">
                             <svg aria-labelledby="simpleicons-slack-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#FF0064">
@@ -102,6 +105,13 @@ const MainPage = {
          scriptEl.setAttribute('id', '_carbonads_js');
          scriptEl.setAttribute('async', null);
          this.$refs.carbon.appendChild(scriptEl);
+
+        docsearch({
+            container: '#docsearch',
+            appId: '2UUKVSBT3M',
+            indexName: 'typeorm',
+            apiKey: '8392de2c2e76d873b60bf10562aab788'
+        });
     },
     methods: {
         goToLink: function () {

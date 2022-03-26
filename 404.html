@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-framework="typescript">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script>
+        // since the site is a single page application,
+        // replace the current url to point to index.html with the entire path as a query property
+        // so index.html could put the path back into the current url wia the history api
+        window.location.replace(
+            window.location.origin + "/?path=" + encodeURIComponent(window.location.href.substring(window.location.origin.length))
+        );
+    </script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="image/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon/favicon-16x16.png">
+    <link rel="manifest" href="image/favicon/manifest.json">
+    <link rel="mask-icon" href="image/favicon/safari-pinned-tab.svg" color="#666666">
+    <meta name="theme-color" content="#ffffff">
+    <title>
+        TypeORM - Amazing ORM for TypeScript and JavaScript (ES7, ES6, ES5). Supports MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, Oracle, WebSQL databases. Works in NodeJS, Browser, Ionic, Cordova and Electron platforms.
+    </title>
+</head>
+<body>
+</body>
+</html>
