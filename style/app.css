@@ -243,3 +243,7 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.DocSearch mark {
+    padding: initial;
+}
