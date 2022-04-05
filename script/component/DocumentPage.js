@@ -9,9 +9,11 @@ const DocumentPage = {
 </div>
 `,
     data: function() {
+        const route = normalizeRoute(this.$route);
+
         return {
-            document: this.$route.params.document,
-            hash: this.$route.hash,
+            document: route.document,
+            hash: route.hash,
             locale: $cookies.get("locale") || "en",
             readLink: "https://raw.githubusercontent.com/typeorm/typeorm/master/",
             editLink: "https://github.com/typeorm/typeorm/edit/master/"
@@ -19,8 +21,10 @@ const DocumentPage = {
     },
     watch: {
         '$route': function(to, from) {
-            this.document = to.params.document;
-            this.hash = to.hash;
+            const route = normalizeRoute(to);
+
+            this.document = route.document;
+            this.hash = route.hash;
             this.updateTitle();
         }
     },
@@ -59,3 +63,26 @@ const DocumentPage = {
         }
     }
 };
+
+// Treat https://typeorm.io/?route=%2Fentities%23what-is-entity as https://typeorm.io/entities#what-is-entity
+// This is used for Algolia DocSearch crawler indexing as a workaround
+// for the site being a single page app while utilizing a 404 page for that
+function normalizeRoute(route) {
+    let document = route.params.document;
+    let hash = route.hash;
+
+    if (route.query != null && route.query["route"] != null) {
+        const url = new URL(window.location.origin + route.query["route"]);
+        document = url.pathname.split("/")[1];
+
+        if (document == null)
+            document = route.params.document;
+        else
+            hash = url.hash;
+    }
+
+    return {
+        document,
+        hash,
+    };
+}
