@@ -84,7 +84,7 @@ h1 code, h2 code, h3 code {
     flex: 1;
 }
 
-@media only screen and (min-width: 579px) {
+@media only screen and (max-width: 579px) {
     .left-panel {
         max-width: 579px;
     }
