@@ -43,11 +43,27 @@ h2, h3 {
     border-bottom: 1px solid #EEE;
     height: 60px;
 }
+.brand-type {
+    color: #E83524;
+}
+.brand-orm {
+    color: #000;
+}
+.svgIcon {
+    fill: #2c2c2c;
+}
 @supports (-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px)) {
     .navbar {
         background-color: rgba(255, 255, 255, 0.6);
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .navbar {
+            background-color: rgba(36, 37, 38, 0.6);
+            border-bottom: 1px solid #1b1b1b;
+        }
     }
 }
 .document h1+ul, .document h1+ul ul {
@@ -153,14 +169,14 @@ ol {
     cursor: pointer;
 }
 
-.language .dropdown-item:hover, 
+.language .dropdown-item:hover,
 .language .dropdown-item:focus {
     color: #E83524 !important;
     text-decoration: none;
     background-color: #f8f9fa;
 }
-  
-.language .dropdown-item.active, 
+
+.language .dropdown-item.active,
 .language .dropdown-item:active {
     color: #ffffff;
     text-decoration: none;
@@ -279,4 +295,142 @@ ol {
 img {
   max-width: 100%;
   height: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #18191a;
+        color: #eeeeee;
+    }
+
+    .carbon-container {
+        border-top: 1px solid #3b3b3b;
+    }
+    h2, h3 {
+        border-bottom: 1px solid #3b3b3b;
+    }
+
+    .brand-type {
+        color: #E83524;
+    }
+    .brand-orm {
+        color: #ffffff;
+    }
+    .svgIcon {
+        fill: #eeeeee;
+    }
+
+    a.anchor {
+        color: #E83524;
+    }
+
+    a {
+        color: #8ad4ff;
+    }
+
+    a:not(.anchor):hover {
+        color: #dbefff;
+    }
+
+    .document h1+ul li::before {
+        color: #E83524;
+    }
+    code {
+        color: #8ad4ff;
+    }
+    h1 code, h2 code, h3 code {
+        color: #333;
+    }
+
+    .left-panel ul a {
+        color: #cccccc;
+    }
+    .left-panel ul a.router-link-active {
+        color: #E83524;
+    }
+    .left-panel ul a b {
+        color: #999999;
+    }
+    .left-panel ul a:hover {
+        color: #E83524;
+    }
+    .left-panel ul a b:hover {
+        color: #E83524;
+    }
+
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .contribute {
+        color: #999;
+    }
+
+    .contribute a {
+        color: #cecece;
+    }
+
+
+    .language .dropdown-menu a {
+        color: #616161;
+    }
+
+    .language .dropdown-item:hover,
+    .language .dropdown-item:focus {
+        color: #E83524 !important;
+        background-color: #f8f9fa;
+    }
+
+    .language .dropdown-item.active,
+    .language .dropdown-item:active {
+        color: #ffffff;
+        background-color: transparent;
+    }
+
+    img[src$="/logo_big.png"] {
+        background-color: rgb(255 255 255);
+        border-radius: 12px;
+    }
+
+
+    #carbonads {
+        background-color: hsl(0, 0%, 2%);
+    }
+
+    #carbonads a {
+        color: inherit;
+    }
+
+    #carbonads a:hover {
+        color: inherit;
+    }
+
+    .DocSearch {
+        --docsearch-text-color: #f5f6f7;
+        --docsearch-muted-color: #7f8497;
+        --docsearch-logo-color: #fff;
+        --docsearch-container-background: rgba(47, 55, 69, 0.7);
+
+        /* Modal */
+        --docsearch-modal-background: #18191a;
+
+        /* Search box */
+        --docsearch-searchbox-background: #18191a;
+        --docsearch-searchbox-focus-background: #000;
+
+        /* Hit */
+        --docsearch-hit-color: #f5f6f7;
+        --docsearch-hit-active-color: #fff;
+        --docsearch-hit-background: #1c1e21;
+
+        /* Footer */
+        --docsearch-footer-background: #242526;
+        --docsearch-key-gradient: linear-gradient(-26.5deg, #515151, #404040);
+
+        /* Shadows */
+        --docsearch-modal-shadow: inset 1px 1px 0 0 #2c2e40,0,0 3px 8px 0 #000309;
+        --docsearch-hit-shadow: none;
+        --docsearch-key-shadow: inset 0 -2px 0 0 #282d55,inset 0 0 1px 1px #51577d,0 2px 2px 0 rgba(3,4,9,.3);
+        --docsearch-footer-shadow: inset 0 1px 0 0 rgba(73,76,106,.5),0 -4px 8px 0 rgba(0,0,0,.2);
+    }
 }
