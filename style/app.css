@@ -1,3 +1,6 @@
+html {
+    scroll-padding-top: 80px;
+}
 body {
     padding-bottom: 20px;
 }
@@ -33,6 +36,19 @@ h2, h3 {
 }
 .navbar {
     margin-bottom: 30px;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 1);
+    border-bottom: 1px solid #EEE;
+    height: 60px;
+}
+@supports (-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px)) {
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.6);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+    }
 }
 .document h1+ul, .document h1+ul ul {
     list-style: none;
@@ -55,9 +71,30 @@ h1 code, h2 code, h3 code {
     color: #333;
 }
 
-.bg-light {
-    background-color: transparent !important;
-    border-bottom: 1px solid #EEE;
+.panels {
+    display: flex;
+    flex-direction: row;;
+    flex-wrap: wrap;
+}
+
+.left-panel {
+    max-width: 340px;
+    min-width: 240px;
+    padding-right: 16px;
+    flex: 1;
+}
+
+@media only screen and (min-width: 579px) {
+    .left-panel {
+        max-width: 579px;
+    }
+}
+
+.right-panel {
+    flex: 2;
+    width: 0px;
+    min-width: 340px;
+    padding: 0px 16px;
 }
 
 .left-panel ul {
@@ -134,7 +171,7 @@ ol {
     border-top: 1px solid #eee;
     padding-top: 20px;
     margin-left: 80px;
-    margin-right: 80px;
+    margin-right: 60px;
     min-width: 120px;
     margin-bottom: 20px;
 }

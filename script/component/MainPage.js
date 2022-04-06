@@ -1,6 +1,6 @@
 const MainPage = {
     template: `<div>
-    <nav class="navbar navbar-expand navbar-light bg-light">
+    <nav class="navbar navbar-expand navbar-light">
         <!--<img src="image/logo-large.png" width="10%" height="10%">-->
         <a class="navbar-brand" href="/"><span style="color: #E83524">Type</span><span style="color: #000">ORM</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,8 +62,8 @@ const MainPage = {
             </form>-->
         </div>
     </nav>
-    <div class="row">
-        <div class="col-12 col-sm-5 col-md-4 left-panel">
+    <div class="panels">
+        <div class="left-panel">
             <ul>
                 <li v-for="link in links">
                     <div v-if="link.links">
@@ -85,7 +85,7 @@ const MainPage = {
             </ul>
             <div class="carbon-container" ref="carbon"></div>
           </div>
-        <div class="col-12 col-sm-7 col-md-8">
+        <div class="right-panel">
             <router-view></router-view>
         </div>
     </div>
