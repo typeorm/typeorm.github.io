@@ -41,6 +41,5 @@ new Vue({
   },
   mounted: function () {
     i18n.locale = $cookies.get("locale") || "en";
-    document.title = this.$t("title");
   }
 });

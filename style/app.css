@@ -297,6 +297,10 @@ img {
   height: auto;
 }
 
+.DocSearch mark {
+    padding: initial;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #18191a;

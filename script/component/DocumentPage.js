@@ -28,15 +28,31 @@ const DocumentPage = {
             this.updateTitle();
         }
     },
-    create: function() {
+    mounted() {
         this.updateTitle();
     },
     methods: {
-        updateTitle: function() {
-            const link = this.$t("links").find(link => link.url === this.document);
-            if (link) {
-                window.document.title = link.name + " | TypeORM";
+        getCurrentDocumentName(links = Links) {
+            for (const link of links) {
+                if (link.url === this.document)
+                    return link.name;
+                else if (link.links instanceof Array) {
+                    const res = this.getCurrentDocumentName(link.links);
+                    if (res != null)
+                        return res;
+                }
             }
+
+            return null;
+        },
+        updateTitle: function() {
+            const documentName = this.getCurrentDocumentName();
+            if (!this.document)
+                document.title = this.$t("title");
+            else if (documentName)
+                window.document.title = documentName + " | TypeORM";
+            else
+                document.title = this.$t("title");
         }
     },
     components: {
