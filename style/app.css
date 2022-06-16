@@ -54,16 +54,17 @@ h2, h3 {
 }
 @supports (-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px)) {
     .navbar {
-        background-color: rgba(255, 255, 255, 0.6);
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
     }
-
-    @media (prefers-color-scheme: dark) {
-        .navbar {
-            background-color: rgba(36, 37, 38, 0.6);
-            border-bottom: 1px solid #1b1b1b;
-        }
+}
+.navbar {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+    .navbar {
+        background-color: rgba(36, 37, 38, 0.6);
+        border-bottom: 1px solid #1b1b1b;
     }
 }
 .document h1+ul, .document h1+ul ul {
