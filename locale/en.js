@@ -140,6 +140,9 @@ const locale_en = {
             url: "mongodb",
             name: "Working with MongoDB"
         }, {
+            url: "dynamodb",
+            name: "Working with DynamoDB"
+        }, {
             url: "validation",
             name: "Using Validation"
         }, {
