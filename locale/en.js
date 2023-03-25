@@ -109,6 +109,9 @@ const locale_en = {
         }, {
             url: "caching",
             name: "Caching Results"
+        }, {
+            url: "safe-typeorm",
+            name: "(extension) Safe-TypeORM"
         }]
     }, {
         name: "Advanced Topics",
