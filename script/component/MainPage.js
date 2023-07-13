@@ -1,5 +1,6 @@
 const MainPage = {
     template: `<div>
+    <header>
     <nav class="navbar navbar-expand navbar-light">
         <!--<img src="image/logo-large.png" width="10%" height="10%">-->
         <a class="navbar-brand" href="/"><span class="brand-type">Type</span><span class="brand-orm">ORM</span></a>
@@ -70,8 +71,9 @@ const MainPage = {
             </form>-->
         </div>
     </nav>
+    </header>
     <div class="panels">
-        <div class="left-panel">
+        <aside class="left-panel">
             <ul>
                 <li v-for="link in links">
                     <div v-if="link.links">
@@ -92,10 +94,10 @@ const MainPage = {
                 </li>
             </ul>
             <div class="carbon-container" ref="carbon"></div>
-          </div>
-        <div class="right-panel">
+        </aside>
+        <main class="right-panel">
             <router-view></router-view>
-        </div>
+        </main>
     </div>
 </div>
 `,

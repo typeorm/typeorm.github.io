@@ -3,9 +3,9 @@ const DocumentPage = {
 <div class="document">
     <markdown-reader :file="readUrl" :hash="hash"></markdown-reader>
     
-    <div class="contribute small">
+    <footer class="contribute small">
         {{$t("contribute")}} <a :href="editUrl">{{$t("edit")}}</a>
-    </div>
+    </footer>
 </div>
 `,
     data: function() {

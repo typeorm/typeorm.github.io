@@ -1,5 +1,5 @@
 const MarkdownReader = {
-    template: `<div v-html="html"></div>`,
+    template: `<section v-html="html"></section>`,
     props: ["file", "hash"],
     data: function() {
         return {
