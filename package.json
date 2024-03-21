@@ -10,7 +10,7 @@
       "prismjs": "^1.6.0",
       "reflect-metadata": "^0.1.10",
       "showdown": "^1.7.4",
-      "typeorm": "0.2.20",
+      "typeorm": "0.3.0",
       "vue": "^2.4.2",
       "vue-router": "^2.7.0"
    },
